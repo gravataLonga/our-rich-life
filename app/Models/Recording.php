@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
@@ -19,15 +20,22 @@ class Recording extends Model
         return $this->morphTo();
     }
 
+
+    #[Scope]
+    protected function record(Builder $builder, string $recordable): void
+    {
+        $builder->whereMorphedTo('recordable', $recordable)
+            ->with('recordable');
+    }
+
     public function isBucket(): bool
     {
         return $this->recordable_type === Bucket::class;
     }
 
-    #[Scope]
-    protected function buckets(Builder $builder): void
+
+    public function attr(string $key, mixed $default = null): mixed
     {
-        $builder->whereMorphedTo('recordable', Bucket::class)
-            ->with('recordable');
+        return data_get($this->recordable, $key, $default);
     }
 }

@@ -12,12 +12,11 @@
             <x-panel wire:key="{{ $bucket->id }}">
 
                 <x-slot:header>
-                    {{ $bucket->recordable->name }}
+                    {{ $bucket->attr('name') }}
                 </x-slot:header>
 
                 <div class="flex items-end justify-between">
-                    <h6 class="text-4xl text-slate-800">{{ $bucket->recordable->amount ?? 0 }} €</h6>
-                    <x-heroicon-o-pencil-square wire:click="$set('editable', true)" class="w-6 h-6 text-slate-400"/>
+                    <h6 class="text-4xl text-slate-800">{{ $bucket->attr('goal', 0) }} €</h6>
                 </div>
             </x-panel>
         @endforeach
