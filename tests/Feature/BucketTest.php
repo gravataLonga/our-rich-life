@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Livewire\Bucket;
+use App\Models\Recording;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Livewire\Livewire;
@@ -40,8 +41,8 @@ class BucketTest extends TestCase
         ]);
         $this->assertDatabaseCount('recordings', 1);
         $this->assertDatabaseHas('recordings', [
-            'record_id' => 1,
-            'record_type' => \App\Models\Bucket::class,
+            'recordable_id' => 1,
+            'recordable_type' => \App\Models\Bucket::class,
             'group_id' => null,
         ]);
     }
@@ -56,6 +57,13 @@ class BucketTest extends TestCase
         $this->assertDatabaseCount('buckets', 0);
     }
 
+    #[Test]
+    public function list_buckets ()
+    {
+        \App\Models\Bucket::factory()->count(5)->has(Recording::factory())->create();
+        $response = Livewire::test(Bucket\Overview::class);
 
-
+        $response->assertSuccessful()
+            ->assertViewHas('buckets');
+    }
 }

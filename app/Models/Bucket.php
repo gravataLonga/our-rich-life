@@ -16,6 +16,6 @@ class Bucket extends Model
 
     public function recording()
     {
-        return $this->morphOne(Recording::class, 'record');
+        return $this->morphOne(Recording::class, 'recordable');
     }
 }

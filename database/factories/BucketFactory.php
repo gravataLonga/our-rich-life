@@ -17,7 +17,8 @@ class BucketFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => $this->faker->companySuffix() . ' ' . $this->faker->words(3, true),
+            'goal' => $this->faker->numberBetween(50000, 3400000),
         ];
     }
 }

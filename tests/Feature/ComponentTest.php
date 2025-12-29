@@ -2,18 +2,15 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Support\MessageBag;
-use Illuminate\Support\Str;
-use Illuminate\Support\ViewErrorBag;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
-class FormTest extends TestCase
+class ComponentTest extends TestCase
 {
     #[Test]
-    #[DataProvider('dataProviderGenerateBasicForm')]
-    public function generate_basic_form (string $component, string $expectedTag, string $expectedAttribute)
+    #[DataProvider('dataProviderGenerateBasicInput')]
+    public function generate_basic_input (string $component, string $expectedTag, string $expectedAttribute)
     {
         $render = $this->withViewErrors([])->blade($component);
 
@@ -21,7 +18,7 @@ class FormTest extends TestCase
         $render->assertSee($expectedAttribute, false);
     }
 
-    public static function dataProviderGenerateBasicForm(): array
+    public static function dataProviderGenerateBasicInput(): array
     {
         return [
             'input' => ['<x-form.input/>', 'input', 'name=""'],
@@ -41,5 +38,24 @@ class FormTest extends TestCase
         ])->blade('<x-form.input name="name"/>');
 
         $render->assertSee('The name field is required.');
+    }
+
+    #[Test]
+    #[DataProvider('dataProviderSmokeTestForComponents')]
+    public function smoke_test_for_components (string $bladeComponent, array $expectedToSee)
+    {
+        $view = $this->blade($bladeComponent);
+
+        foreach ($expectedToSee as $expected) {
+            $view->assertSee($expected, true);
+        }
+    }
+
+    public static function dataProviderSmokeTestForComponents(): array
+    {
+        return [
+            'panel' => ["<x-panel>\n<x-slot:header>my title</x-slot:header>\nHello</x-panel>", ['my title', 'Hello']],
+            'link button primary' => ["<x-link.button-primary href=\"/link\">button</x-link.button-primary>", ['button', '/link']],
+        ];
     }
 }

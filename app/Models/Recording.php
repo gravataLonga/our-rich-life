@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Recording extends Model
@@ -18,14 +19,15 @@ class Recording extends Model
         return $this->morphTo();
     }
 
-    public function isSelfie(): bool
+    public function isBucket(): bool
     {
-        return $this->recordable_type === Selfie::class;
+        return $this->recordable_type === Bucket::class;
     }
 
     #[Scope]
-    protected function selfies(Builder $builder): void
+    protected function buckets(Builder $builder): void
     {
-        $builder->where('recording_type', Selfie::class);
+        $builder->whereMorphedTo('recordable', Bucket::class)
+            ->with('recordable');
     }
 }
