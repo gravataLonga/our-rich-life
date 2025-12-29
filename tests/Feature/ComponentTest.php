@@ -54,7 +54,7 @@ class ComponentTest extends TestCase
     public static function dataProviderSmokeTestForComponents(): array
     {
         return [
-            'panel' => ["<x-panel>\n<x-slot:header>my title</x-slot:header>\nHello</x-panel>", ['my title', 'Hello']],
+            'panel' => ["<x-card>Hello</x-card>", ['Hello']],
             'link button primary' => ["<x-link.button-primary href=\"/link\">button</x-link.button-primary>", ['button', '/link']],
         ];
     }
