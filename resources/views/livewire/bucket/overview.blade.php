@@ -9,8 +9,7 @@
 
     <div class="grid grid-cols-3 gap-4">
         @foreach($buckets as $bucket)
-            <!-- Card 2: Design Minimalista Claro -->
-            <div class="bg-white rounded-2xl shadow-lg p-6 max-w-md border border-gray-200">
+            <x-card wire:key="{{ $bucket->attr('id') }}">
                 <div class="flex items-start justify-between mb-4">
                     <div>
                         <span class="text-gray-500 text-sm font-medium">Objetivo Financeiro</span>
@@ -40,7 +39,7 @@
                     <span>Restam €2.850</span>
                     <span>🎯 57% para completar</span>
                 </div>
-            </div>
+            </x-card>
         @endforeach
     </div>
 </div>

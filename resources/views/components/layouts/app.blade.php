@@ -12,12 +12,12 @@
 
     <header class="h-20 bg-slate-800 flex items-center">
         <div class="container mx-auto flex justify-between items-center">
-            <h1 class="font-bold font-sans text-2xl text-white">Our Richer Life</h1>
+            <h1 class="font-bold font-sans text-2xl text-white"><a href="/">Our Richer Life</a></h1>
             <nav class="">
                 <div class="flex justify-around text-white font-semibold space-x-4 items-center">
                     <x-nav-item>Vision</x-nav-item>
                     <x-nav-item>Financial Selfie</x-nav-item>
-                    <x-nav-item>Bucket</x-nav-item>
+                    <x-nav-item wire:navigate href="{{ route('bucket.overview') }}">Bucket</x-nav-item>
                 </div>
             </nav>
         </div>
