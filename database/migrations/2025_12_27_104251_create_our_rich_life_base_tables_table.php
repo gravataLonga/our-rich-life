@@ -1,0 +1,56 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('recordings', function (Blueprint $table) {
+            $table->id();
+            $table->morphs('recordable');
+            $table->unsignedBigInteger('parent_id')->nullable();
+            $table->unsignedBigInteger('owner_id')->nullable();
+            $table->unsignedBigInteger('group_id')->nullable();
+            $table->timestamps();
+        });
+
+        Schema::create('events', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('recording_id');
+            $table->unsignedBigInteger('recordable_id');
+            $table->timestamp('occurred_at');
+        });
+
+        Schema::create('accounts', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('account_type_id')->nullable();
+            $table->string('name');
+            $table->string('description')->nullable();
+        });
+
+        Schema::create('account_types', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('color', 30)->nullable();
+            $table->string('icon', 50)->nullable();
+        });
+
+        Schema::create('selfies', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedInteger('account_id');
+            $table->integer('amount');
+        });
+
+        Schema::create('buckets', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->unsignedInteger('goal');
+        });
+    }
+};
