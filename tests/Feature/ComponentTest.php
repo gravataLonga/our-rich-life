@@ -9,8 +9,8 @@ use Tests\TestCase;
 class ComponentTest extends TestCase
 {
     #[Test]
-    #[DataProvider('dataProviderGenerateBasicInput')]
-    public function generate_basic_input (string $component, string $expectedTag, string $expectedAttribute)
+    #[DataProvider('dataProviderFormInputs')]
+    public function form_inputs (string $component, string $expectedTag, string $expectedAttribute)
     {
         $render = $this->withViewErrors([])->blade($component);
 
@@ -18,7 +18,7 @@ class ComponentTest extends TestCase
         $render->assertSee($expectedAttribute, false);
     }
 
-    public static function dataProviderGenerateBasicInput(): array
+    public static function dataProviderFormInputs(): array
     {
         return [
             'input' => ['<x-form.input/>', 'input', 'name=""'],
