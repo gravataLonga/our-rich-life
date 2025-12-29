@@ -28,11 +28,10 @@ class Recording extends Model
             ->with('recordable');
     }
 
-    public function isBucket(): bool
+    public function isRecordable(string $recordableClass): bool
     {
-        return $this->recordable_type === Bucket::class;
+        return $this->recordable_type === $recordableClass;
     }
-
 
     public function attr(string $key, mixed $default = null): mixed
     {
