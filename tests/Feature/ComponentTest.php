@@ -10,7 +10,7 @@ class ComponentTest extends TestCase
 {
     #[Test]
     #[DataProvider('dataProviderFormInputs')]
-    public function form_inputs (string $component, string $expectedTag, string $expectedAttribute)
+    public function form_inputs (string $component, string $expectedTag, string $expectedAttribute): void
     {
         $render = $this->withViewErrors([])->blade($component);
 
@@ -31,7 +31,7 @@ class ComponentTest extends TestCase
     }
 
     #[Test]
-    public function in_case_the_error_we_show_message ()
+    public function in_case_the_error_we_show_message (): void
     {
         $render = $this->withViewErrors([
             'name' => 'The name field is required.'
@@ -42,7 +42,7 @@ class ComponentTest extends TestCase
 
     #[Test]
     #[DataProvider('dataProviderSmokeTestForComponents')]
-    public function smoke_test_for_components (string $bladeComponent, array $expectedToSee)
+    public function smoke_test_for_components (string $bladeComponent, array $expectedToSee): void
     {
         $view = $this->blade($bladeComponent);
 

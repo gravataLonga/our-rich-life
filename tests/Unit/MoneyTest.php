@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 class MoneyTest extends TestCase
 {
     #[Test]
-    public function create_from_native ()
+    public function create_from_native (): void
     {
         $money = Money::fromNative(10.50);
 
@@ -19,7 +19,7 @@ class MoneyTest extends TestCase
     }
 
     #[Test]
-    public function accept_null ()
+    public function accept_null (): void
     {
         $money = Money::fromNative(null);
 
@@ -28,7 +28,7 @@ class MoneyTest extends TestCase
     }
 
     #[Test]
-    public function comparisons ()
+    public function comparisons (): void
     {
         $money = Money::fromNative(634.32);
 
@@ -37,7 +37,7 @@ class MoneyTest extends TestCase
     }
 
     #[Test]
-    public function format_number ()
+    public function format_number (): void
     {
         $money = Money::fromNative(1634.52);
 
@@ -55,7 +55,7 @@ class MoneyTest extends TestCase
     }
 
     #[Test]
-    public function add_two_money_together ()
+    public function add_two_money_together (): void
     {
         $moneyOne = Money::fromNative(250);
         $moneyTwo = Money::fromNative(250);
@@ -69,7 +69,7 @@ class MoneyTest extends TestCase
     }
 
     #[Test]
-    public function sub_two_money_together ()
+    public function sub_two_money_together (): void
     {
         $moneyOne = Money::fromNative(250);
         $moneyTwo = Money::fromNative(250);

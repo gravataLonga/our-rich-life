@@ -13,7 +13,7 @@ class RecordingModelTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function can_add_morph_class ()
+    public function can_add_morph_class (): void
     {
         $bucket = Bucket::factory()->create()
             ->recording()
@@ -27,7 +27,7 @@ class RecordingModelTest extends TestCase
     }
 
     #[Test]
-    public function can_get_recordable_attributes_from_recording ()
+    public function can_get_recordable_attributes_from_recording (): void
     {
         $bucket = Bucket::factory()->has(Recording::factory())->create();
 
@@ -38,7 +38,7 @@ class RecordingModelTest extends TestCase
     }
 
     #[Test]
-    public function can_check_type_of_recordable ()
+    public function can_check_type_of_recordable (): void
     {
         Bucket::factory()->has(Recording::factory())->create();
 

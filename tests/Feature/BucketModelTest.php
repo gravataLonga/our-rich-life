@@ -14,7 +14,7 @@ class BucketModelTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function cast_to_money_goal_field ()
+    public function cast_to_money_goal_field (): void
     {
         $bucket = Bucket::factory()->create(['goal' => 1000.42]);
 
@@ -25,7 +25,7 @@ class BucketModelTest extends TestCase
     }
 
     #[Test]
-    public function can_pass_money_instance ()
+    public function can_pass_money_instance (): void
     {
         $bucket = new Bucket();
         $bucket->name = "Hello";
@@ -39,7 +39,7 @@ class BucketModelTest extends TestCase
     }
 
     #[Test]
-    public function after_retrieve_from_database_we_still_get_money_instance ()
+    public function after_retrieve_from_database_we_still_get_money_instance (): void
     {
         $bucket = new Bucket();
         $bucket->name = "Hello";

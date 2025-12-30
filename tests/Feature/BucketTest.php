@@ -16,7 +16,7 @@ class BucketTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function access_create_form()
+    public function access_create_form(): void
     {
         $response = $this->get(route('bucket.create'));
 
@@ -26,7 +26,7 @@ class BucketTest extends TestCase
     }
 
     #[Test]
-    public function can_create_a_bucket ()
+    public function can_create_a_bucket (): void
     {
         $response = Livewire::test(Bucket\Create::class)
             ->set('name', 'test')
@@ -49,7 +49,7 @@ class BucketTest extends TestCase
     }
 
     #[Test]
-    public function validate_data_before_saving_it ()
+    public function validate_data_before_saving_it (): void
     {
         $response = Livewire::test(Bucket\Create::class)
             ->call('store');
@@ -59,7 +59,7 @@ class BucketTest extends TestCase
     }
 
     #[Test]
-    public function show_error_messages ()
+    public function show_error_messages (): void
     {
         $this->followingRedirects();
 
@@ -73,7 +73,7 @@ class BucketTest extends TestCase
     }
 
     #[Test]
-    public function list_buckets ()
+    public function list_buckets (): void
     {
         \App\Models\Bucket::factory()->count(5)->has(Recording::factory())->create();
         $response = Livewire::test(Bucket\Overview::class);
