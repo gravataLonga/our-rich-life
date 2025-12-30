@@ -23,7 +23,7 @@ class Create extends Component
             $this->only(['name', 'goal'])
         )->recording()->create();
 
-        return $this->redirect('/bucket');
+        $this->redirectRoute('bucket.overview');
     }
 
     public function render()

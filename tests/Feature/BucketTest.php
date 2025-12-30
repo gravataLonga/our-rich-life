@@ -34,10 +34,11 @@ class BucketTest extends TestCase
             ->call('store');
 
         $response->assertHasNoErrors();
+        $response->assertRedirect(route('bucket.overview'));
         $this->assertDatabaseCount('buckets', 1);
         $this->assertDatabaseHas('buckets', [
             'name' => 'test',
-            'goal' => 1000,
+            'goal' => 100000,
         ]);
         $this->assertDatabaseCount('recordings', 1);
         $this->assertDatabaseHas('recordings', [
@@ -55,6 +56,20 @@ class BucketTest extends TestCase
 
         $response->assertHasErrors(['name', 'goal']);
         $this->assertDatabaseCount('buckets', 0);
+    }
+
+    #[Test]
+    public function show_error_messages ()
+    {
+        $this->followingRedirects();
+
+        $response = Livewire::test(Bucket\Create::class)
+            ->call('store');
+
+        $response->assertHasErrors(['name', 'goal']);
+        $this->assertDatabaseCount('buckets', 0);
+        $response->assertSee('The name field is required.');
+        $response->assertSee('The goal field is required.');
     }
 
     #[Test]

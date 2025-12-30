@@ -5,18 +5,10 @@ namespace OurRichLife;
 
 use InvalidArgumentException;
 
-final class Money implements ValueObject
+final readonly class Money implements ValueObject
 {
-    private ?int $value;
-
-    public function __construct(mixed $fromNative)
+    public function __construct(private ?int $value = null)
     {
-        $this->value = match (true) {
-            is_string($fromNative) || is_float($fromNative) => (int)round(floatval($fromNative) * 100),
-            is_int($fromNative) => $fromNative * 100,
-            is_null($fromNative) => null,
-            default => throw new InvalidArgumentException(sprintf('%s is not a valid number', $fromNative)),
-        };
     }
 
     public function value(): mixed
@@ -26,12 +18,28 @@ final class Money implements ValueObject
 
     public static function fromNative(mixed $value): ValueObject
     {
+        $value = match (true) {
+            is_string($value) || is_float($value) => (int)round(floatval($value) * 100),
+            is_int($value) => $value * 100,
+            is_null($value) => null,
+            default => throw new InvalidArgumentException(sprintf('%s is not a valid number', $fromNative)),
+        };
         return new Money($value);
     }
 
     public function equal(Money $money): bool
     {
         return $money->value() === $this->value;
+    }
+
+    public function add(Money $money): Money
+    {
+        return new Money($this->value + $money->value());
+    }
+
+    public function sub(Money $money): Money
+    {
+        return new Money($this->value - $money->value());
     }
 
     public function toNative(): mixed

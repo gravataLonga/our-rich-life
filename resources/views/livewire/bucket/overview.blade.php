@@ -23,11 +23,11 @@
                 <div class="grid grid-cols-2 gap-4 mb-4">
                     <div>
                         <p class="text-gray-500 text-sm mb-1">Valor Actual</p>
-                        <p class="text-2xl font-bold text-gray-800">€2.150</p>
+                        <p class="text-2xl font-bold text-gray-800">{{ \OurRichLife\Money::fromNative(1250.50)->format('€') }}</p>
                     </div>
                     <div>
                         <p class="text-gray-500 text-sm mb-1">Meta</p>
-                        <p class="text-2xl font-bold text-gray-800">€ {{ $bucket->attr('goal') }}</p>
+                        <p class="text-2xl font-bold text-gray-800">{{ $bucket->attr('goal')->format('€') }}</p>
                     </div>
                 </div>
 

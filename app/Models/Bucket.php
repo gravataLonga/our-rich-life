@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\MoneyCast;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,6 +14,10 @@ class Bucket extends Model
     public $timestamps = false;
 
     protected $guarded = [];
+
+    protected $casts = [
+        'goal' => MoneyCast::class,
+    ];
 
     public function recording()
     {

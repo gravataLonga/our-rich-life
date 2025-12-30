@@ -45,5 +45,41 @@ class MoneyTest extends TestCase
         $this->assertEquals('1 635', $money->format(decimals: 0));
         $this->assertEquals('1 634.5', $money->format(decimals: 1, decimalSeparator: '.'));
         $this->assertEquals('€ 1 634,52', $money->format('€'));
+
+        $money = new Money(163452);
+
+        $this->assertEquals('1 634,52', $money->format());
+        $this->assertEquals('1 635', $money->format(decimals: 0));
+        $this->assertEquals('1 634.5', $money->format(decimals: 1, decimalSeparator: '.'));
+        $this->assertEquals('€ 1 634,52', $money->format('€'));
     }
+
+    #[Test]
+    public function add_two_money_together ()
+    {
+        $moneyOne = Money::fromNative(250);
+        $moneyTwo = Money::fromNative(250);
+        $moneySum = $moneyOne->add($moneyTwo);
+
+        $this->assertEquals(500, $moneySum->toNative());
+        $this->assertNotSame($moneyOne, $moneySum);
+        $this->assertNotSame($moneyTwo, $moneySum);
+        $this->assertEquals(250, $moneyOne->toNative());
+        $this->assertEquals(250, $moneyTwo->toNative());
+    }
+
+    #[Test]
+    public function sub_two_money_together ()
+    {
+        $moneyOne = Money::fromNative(250);
+        $moneyTwo = Money::fromNative(250);
+        $moneySum = $moneyOne->sub($moneyTwo);
+
+        $this->assertEquals(0, $moneySum->toNative());
+        $this->assertNotSame($moneyOne, $moneySum);
+        $this->assertNotSame($moneyTwo, $moneySum);
+        $this->assertEquals(250, $moneyOne->toNative());
+        $this->assertEquals(250, $moneyTwo->toNative());
+    }
+
 }
