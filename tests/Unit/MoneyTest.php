@@ -35,4 +35,15 @@ class MoneyTest extends TestCase
         $this->assertTrue($money->equal(Money::fromNative(634.32)), 'Two values aren\'t equal');
         $this->assertFalse($money->equal(Money::fromNative(634.31)), 'Two values are equals');
     }
+
+    #[Test]
+    public function format_number ()
+    {
+        $money = Money::fromNative(1634.52);
+
+        $this->assertEquals('1 634,52', $money->format());
+        $this->assertEquals('1 635', $money->format(decimals: 0));
+        $this->assertEquals('1 634.5', $money->format(decimals: 1, decimalSeparator: '.'));
+        $this->assertEquals('€ 1 634,52', $money->format('€'));
+    }
 }

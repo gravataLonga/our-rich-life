@@ -46,4 +46,13 @@ final class Money implements ValueObject
     {
         return $this->value === null;
     }
+
+    public function format(?string $currency = null, int $decimals = 2, string $decimalSeparator = ','): string
+    {
+        $value = number_format($this->toNative(), $decimals, $decimalSeparator, ' ');
+        return match (true) {
+            ! is_null($currency) => sprintf('%s %s', $currency, $value),
+            default => $value,
+        };
+    }
 }
