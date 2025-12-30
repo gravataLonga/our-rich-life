@@ -18,9 +18,9 @@ class BucketTest extends TestCase
     #[Test]
     public function access_create_form(): void
     {
-        $response = $this->get(route('bucket.create'));
+        $response = $this->get(route('bucket.form.create'));
 
-        $response->assertSeeLivewire(Bucket\Create::class)
+        $response->assertSeeLivewire(Bucket\Form::class)
             ->assertSee('name="name"', false)
             ->assertSee('name="goal"', false);
     }
@@ -28,10 +28,10 @@ class BucketTest extends TestCase
     #[Test]
     public function can_create_a_bucket (): void
     {
-        $response = Livewire::test(Bucket\Create::class)
+        $response = Livewire::test(Bucket\Form::class)
             ->set('name', 'test')
             ->set('goal', 1000)
-            ->call('store');
+            ->call('save');
 
         $response->assertHasNoErrors();
         $response->assertRedirect(route('bucket.overview'));
@@ -51,8 +51,8 @@ class BucketTest extends TestCase
     #[Test]
     public function validate_data_before_saving_it (): void
     {
-        $response = Livewire::test(Bucket\Create::class)
-            ->call('store');
+        $response = Livewire::test(Bucket\Form::class)
+            ->call('save');
 
         $response->assertHasErrors(['name', 'goal']);
         $this->assertDatabaseCount('buckets', 0);
@@ -63,8 +63,8 @@ class BucketTest extends TestCase
     {
         $this->followingRedirects();
 
-        $response = Livewire::test(Bucket\Create::class)
-            ->call('store');
+        $response = Livewire::test(Bucket\Form::class)
+            ->call('save');
 
         $response->assertHasErrors(['name', 'goal']);
         $this->assertDatabaseCount('buckets', 0);
@@ -79,6 +79,6 @@ class BucketTest extends TestCase
         $response = Livewire::test(Bucket\Overview::class);
 
         $response->assertSuccessful()
-            ->assertViewHas('buckets');
+            ->assertViewHas('recordings');
     }
 }

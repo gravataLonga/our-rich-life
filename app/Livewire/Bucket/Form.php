@@ -6,13 +6,22 @@ use App\Models\Bucket;
 use App\Models\Recording;
 use Livewire\Component;
 
-class Create extends Component
+class Form extends Component
 {
+    private ?Recording $recording;
+
     public ?string $name = null;
 
-    public ?string $goal = null;
+    public ?float $goal = null;
 
-    public function store()
+    public function mount(?Recording $recording = null)
+    {
+        $this->recording = $recording;
+        $this->goal = $recording?->recordable?->goal?->toNative();
+        $this->name = $recording?->recordable?->name;
+    }
+
+    public function save()
     {
         $this->validate([
             'name' => 'required|min:3',
@@ -28,6 +37,6 @@ class Create extends Component
 
     public function render()
     {
-        return view('livewire.bucket.create');
+        return view('livewire.bucket.form');
     }
 }
