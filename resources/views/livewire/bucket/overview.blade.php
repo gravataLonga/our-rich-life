@@ -35,10 +35,22 @@
                     <div class="progress-fill bg-linear-to-r from-green-400 to-green-600 h-full rounded-full" style="width: 43%"></div>
                 </div>
 
-                <div class="mt-4 flex items-center justify-between text-sm text-gray-600">
-                    <span>Restam €2.850</span>
-                    <span>🎯 57% para completar</span>
+                <div class="flex gap-3 mt-4">
+                    <x-link.button-secondary>
+                        <span>
+                            <x-heroicon-o-pencil-square class="w-4 h-4"/>
+                        </span>
+                        <span>Edit</span>
+                    </x-link.button-secondary>
+
+                    <x-link.button-tertiary>
+                        <span>
+                            <x-heroicon-o-chart-bar class="w-4 h-4"/>
+                        </span>
+                        <span>Movimentos</span>
+                    </x-link.button-tertiary>
                 </div>
+
             </x-card>
         @endforeach
     </div>

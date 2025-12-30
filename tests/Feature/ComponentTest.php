@@ -56,6 +56,11 @@ class ComponentTest extends TestCase
         return [
             'panel' => ["<x-card>Hello</x-card>", ['Hello']],
             'link button primary' => ["<x-link.button-primary href=\"/link\">button</x-link.button-primary>", ['button', '/link']],
+            'link button primary with attributes' => ["<x-link.button-primary wire:navigate href=\"/link\">button</x-link.button-primary>", ['wire:navigate']],
+            'link button secondary' => ["<x-link.button-secondary href=\"/link\">button</x-link.button-secondary>", ['button', '/link']],
+            'link button secondary with attributes' => ["<x-link.button-secondary wire:navigate href=\"/link\">button</x-link.button-secondary>", ['wire:navigate']],
+            'link button tertiary' => ["<x-link.button-tertiary href=\"/link\">button</x-link.button-tertiary>", ['button', '/link']],
+            'link button tertiary with attributes' => ["<x-link.button-tertiary wire:navigate href=\"/link\">button</x-link.button-tertiary>", ['wire:navigate']],
         ];
     }
 }
