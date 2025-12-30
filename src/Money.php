@@ -12,7 +12,7 @@ final class Money implements ValueObject
     public function __construct(mixed $fromNative)
     {
         $this->value = match (true) {
-            is_string($fromNative) || is_float($fromNative) => (int)(floatval($fromNative) * 100),
+            is_string($fromNative) || is_float($fromNative) => (int)round(floatval($fromNative) * 100),
             is_int($fromNative) => $fromNative * 100,
             is_null($fromNative) => null,
             default => throw new InvalidArgumentException(sprintf('%s is not a valid number', $fromNative)),
@@ -27,6 +27,11 @@ final class Money implements ValueObject
     public static function fromNative(mixed $value): ValueObject
     {
         return new Money($value);
+    }
+
+    public function equal(Money $money): bool
+    {
+        return $money->value() === $this->value;
     }
 
     public function toNative(): mixed

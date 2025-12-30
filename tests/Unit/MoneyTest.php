@@ -26,4 +26,13 @@ class MoneyTest extends TestCase
         $this->assertTrue($money->isNull());
         $this->assertEquals(null, $money->toNative());
     }
+
+    #[Test]
+    public function comparisons ()
+    {
+        $money = Money::fromNative(634.32);
+
+        $this->assertTrue($money->equal(Money::fromNative(634.32)), 'Two values aren\'t equal');
+        $this->assertFalse($money->equal(Money::fromNative(634.31)), 'Two values are equals');
+    }
 }
