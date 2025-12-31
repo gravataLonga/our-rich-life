@@ -24,10 +24,7 @@ class RecordingModelTest extends TestCase
     {
         $bucket = Bucket::factory()->create()
             ->recording()
-            ->create([
-                'created_by' => User::factory()->create(),
-                'updated_by' => User::factory()->create(),
-            ]);
+            ->create();
 
         $this->assertDatabaseCount('recordings', 1);
         $this->assertDatabaseHas('recordings', [

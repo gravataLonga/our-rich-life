@@ -39,13 +39,9 @@ class Form extends Component
                 'recordable_id' => $this->recording->recordable->id,
                 'occurred_at' => now()
             ]);
-            $this->recording->updated_by = auth()->id();
             $this->recording->recordable()->associate($bucket)->save();
         } else {
-            $bucket->recording()->create([
-                'created_by' => auth()->id(),
-                'updated_by' => auth()->id(),
-            ]);
+            $bucket->recording()->create();
         }
 
         $this->redirectRoute('bucket.overview');

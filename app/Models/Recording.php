@@ -15,10 +15,17 @@ class Recording extends Model
     /** @use HasFactory<\Database\Factories\RecordingFactory> */
     use HasFactory;
 
-    protected $fillable = [
-        'created_by',
-        'updated_by',
-    ];
+    public static function booted()
+    {
+        static::creating(function (Model $model) {
+            $model->created_by = auth()->id();
+            $model->updated_by = auth()->id();
+        });
+
+        static::updating(function (Model $model) {
+            $model->updated_by = auth()->id();
+        });
+    }
 
     public function recordable(): MorphTo
     {

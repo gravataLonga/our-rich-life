@@ -18,8 +18,6 @@ class RecordingFactory extends Factory
     public function definition(): array
     {
         return [
-            'created_by' => auth()->id() ?? User::factory()->create(),
-            'updated_by' => auth()->id() ?? User::factory()->create(),
         ];
     }
 }
