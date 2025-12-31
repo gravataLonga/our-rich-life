@@ -52,7 +52,11 @@ class BucketTest extends TestCase
         $this->assertDatabaseHas('recordings', [
             'recordable_id' => 1,
             'recordable_type' => \App\Models\Bucket::class,
-            'group_id' => null,
+        ]);
+        $this->assertDatabaseCount('events', 1);
+        $this->assertDatabaseHas('events', [
+            'recordable_id' => 1,
+            'recording_id' => 1,
         ]);
     }
 

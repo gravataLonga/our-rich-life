@@ -41,7 +41,12 @@ class Form extends Component
             ]);
             $this->recording->recordable()->associate($bucket)->save();
         } else {
-            $bucket->recording()->create();
+            $recording = $bucket->recording()->create();
+            Event::create([
+                'recording_id' => $recording->id,
+                'recordable_id' => $bucket->id,
+                'occurred_at' => now()
+            ]);
         }
 
         $this->redirectRoute('bucket.overview');
