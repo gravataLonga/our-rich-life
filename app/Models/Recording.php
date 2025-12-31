@@ -15,6 +15,11 @@ class Recording extends Model
     /** @use HasFactory<\Database\Factories\RecordingFactory> */
     use HasFactory;
 
+    protected $fillable = [
+        'created_by',
+        'updated_by',
+    ];
+
     public function recordable(): MorphTo
     {
         return $this->morphTo();

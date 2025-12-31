@@ -3,12 +3,13 @@
 namespace App\Livewire\Bucket;
 
 use App\Models\Bucket;
+use App\Models\Event;
 use App\Models\Recording;
 use Livewire\Component;
 
 class Form extends Component
 {
-    private ?Recording $recording;
+    public ?Recording $recording = null;
 
     public ?string $name = null;
 
@@ -28,9 +29,24 @@ class Form extends Component
             'goal' => 'required|numeric',
         ]);
 
-        Bucket::create(
+        $bucket = Bucket::create(
             $this->only(['name', 'goal'])
-        )->recording()->create();
+        );
+
+        if ($this->recording) {
+            Event::create([
+                'recording_id' => $this->recording->id,
+                'recordable_id' => $this->recording->recordable->id,
+                'occurred_at' => now()
+            ]);
+            $this->recording->updated_by = auth()->id();
+            $this->recording->recordable()->associate($bucket)->save();
+        } else {
+            $bucket->recording()->create([
+                'created_by' => auth()->id(),
+                'updated_by' => auth()->id(),
+            ]);
+        }
 
         $this->redirectRoute('bucket.overview');
     }

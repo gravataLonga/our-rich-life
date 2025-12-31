@@ -4,6 +4,8 @@ namespace Tests\Feature;
 
 use App\Livewire\Bucket;
 use App\Models\Recording;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Livewire\Livewire;
@@ -14,6 +16,12 @@ use Tests\TestCase;
 class BucketTest extends TestCase
 {
     use RefreshDatabase;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->actingAs(User::factory()->create());
+    }
 
     #[Test]
     public function access_create_form(): void
@@ -28,7 +36,7 @@ class BucketTest extends TestCase
     #[Test]
     public function can_create_a_bucket (): void
     {
-        $response = Livewire::test(Bucket\Form::class)
+        $response = Livewire::test(Bucket\Form::class, ['recording' => null])
             ->set('name', 'test')
             ->set('goal', 1000)
             ->call('save');
@@ -81,4 +89,46 @@ class BucketTest extends TestCase
         $response->assertSuccessful()
             ->assertViewHas('recordings');
     }
+
+    #[Test]
+    public function can_edit_bucket ()
+    {
+        \App\Models\Bucket::factory()->has(Recording::factory())->create();
+        $recording = Recording::with('recordable')->first();
+
+        $response = Livewire::test(Bucket\Form::class, ['recording' => $recording]);
+
+        $response->assertSuccessful()
+            ->assertViewHas('name', $recording->recordable->name)
+            ->assertViewHas('goal', $recording->recordable->goal->toNative());
+    }
+
+    #[Test]
+    public function update_bucket ()
+    {
+        Carbon::setTestNow('2025-01-01 00:00:00');
+        \App\Models\Bucket::factory()->has(Recording::factory())->create();
+        $recording = Recording::with('recordable')->first();
+
+        $response = Livewire::test(Bucket\Form::class, ['recording' => $recording])
+            ->set('name', 'test')
+            ->set('goal', 1000)
+            ->call('save');
+
+        $response->assertRedirectToRoute('bucket.overview');
+        $this->assertDatabaseCount('buckets', 2);
+        $this->assertDatabaseCount('recordings', 1);
+        $this->assertDatabaseCount('events', 1);
+
+        $this->assertDatabaseHas('buckets', [
+            'name' => 'test',
+            'goal' => 100000,
+        ]);
+        $this->assertDatabaseHas('events', [
+            'recordable_id' => 1,
+            'recording_id' => 1,
+            'occurred_at' => '2025-01-01 00:00:00',
+        ]);
+    }
+
 }

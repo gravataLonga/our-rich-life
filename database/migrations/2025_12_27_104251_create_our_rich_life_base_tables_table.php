@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('parent_id')->nullable();
             $table->unsignedBigInteger('owner_id')->nullable();
             $table->unsignedBigInteger('group_id')->nullable();
-            $table->timestamps();
+            $table->metadata();
         });
 
         Schema::create('events', function (Blueprint $table) {

@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Bucket;
 use App\Models\Recording;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -12,12 +13,21 @@ class RecordingModelTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->actingAs(User::factory()->create());
+    }
+
     #[Test]
     public function can_add_morph_class (): void
     {
         $bucket = Bucket::factory()->create()
             ->recording()
-            ->create();
+            ->create([
+                'created_by' => User::factory()->create(),
+                'updated_by' => User::factory()->create(),
+            ]);
 
         $this->assertDatabaseCount('recordings', 1);
         $this->assertDatabaseHas('recordings', [
