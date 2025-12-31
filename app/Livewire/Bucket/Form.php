@@ -34,12 +34,12 @@ class Form extends Component
         );
 
         if ($this->recording) {
+            $this->recording->recordable()->associate($bucket)->save();
             Event::create([
                 'recording_id' => $this->recording->id,
                 'recordable_id' => $this->recording->recordable->id,
                 'occurred_at' => now()
             ]);
-            $this->recording->recordable()->associate($bucket)->save();
         } else {
             $recording = $bucket->recording()->create();
             Event::create([

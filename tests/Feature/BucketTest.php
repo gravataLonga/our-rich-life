@@ -129,7 +129,7 @@ class BucketTest extends TestCase
             'goal' => 100000,
         ]);
         $this->assertDatabaseHas('events', [
-            'recordable_id' => 1,
+            'recordable_id' => 2,
             'recording_id' => 1,
             'occurred_at' => '2025-01-01 00:00:00',
         ]);
