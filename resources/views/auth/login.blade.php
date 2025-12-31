@@ -21,26 +21,27 @@
     </div>
 </header>
 
-<div class="container mx-auto mt-10">
-    <form action="{{ route('login.store') }}" method="post">
-        @csrf
+<form action="{{ route('login.store') }}" method="post">
+    <div class="container mx-auto mt-10">
+            @csrf
 
-        <div class="p-6 flex flex-col bg-white rounded-md space-y-6 border border-slate-100">
-            <div class="flex flex-col space-y-2">
-                <label for="email">
-                    e-mail
-                </label>
-                <x-form.input name="email" type="email"/>
-            </div>
-            <div class="flex flex-col space-y-2">
-                <label for="password">password</label>
-                <x-form.input name="password" type="password"/>
-            </div>
-            <x-button.primary type="submit">submit</x-button.primary>
-        </div>
+            <x-card class="mx-auto flex flex-col space-y-4">
+                <div class="flex flex-col space-y-2">
+                    <label for="email">
+                        e-mail
+                    </label>
+                    <x-form.input name="email" type="email"/>
+                </div>
+                <div class="flex flex-col space-y-2">
+                    <label for="password">password</label>
+                    <x-form.input name="password" type="password"/>
+                </div>
+                <x-button.primary type="submit">sign in</x-button.primary>
+            </x-card>
 
-    </form>
-</div>
+
+    </div>
+</form>
 
 </body>
 </html>

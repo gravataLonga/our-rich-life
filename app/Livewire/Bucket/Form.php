@@ -5,6 +5,7 @@ namespace App\Livewire\Bucket;
 use App\Models\Bucket;
 use App\Models\Event;
 use App\Models\Recording;
+use Illuminate\Database\Eloquent\Collection;
 use Livewire\Component;
 
 class Form extends Component
@@ -14,12 +15,19 @@ class Form extends Component
     public ?string $name = null;
 
     public ?float $goal = null;
+    public Collection $events;
 
     public function mount(?Recording $recording = null)
     {
         $this->recording = $recording;
         $this->goal = $recording?->recordable?->goal?->toNative();
         $this->name = $recording?->recordable?->name;
+        if (!is_null($this->recording)) {
+            $this->events = Event::where('recording_id', $this->recording->id)
+                ->with('recordable')
+                ->orderBy('occurred_at', 'desc')
+                ->get();
+        }
     }
 
     public function save()
@@ -35,16 +43,14 @@ class Form extends Component
 
         if ($this->recording) {
             $this->recording->recordable()->associate($bucket)->save();
-            Event::create([
+            $bucket->events()->create([
                 'recording_id' => $this->recording->id,
-                'recordable_id' => $this->recording->recordable->id,
                 'occurred_at' => now()
             ]);
         } else {
-            $recording = $bucket->recording()->create();
-            Event::create([
-                'recording_id' => $recording->id,
-                'recordable_id' => $bucket->id,
+            $this->recording = $bucket->recording()->create();
+            $bucket->events()->create([
+                'recording_id' => $this->recording->id,
                 'occurred_at' => now()
             ]);
         }

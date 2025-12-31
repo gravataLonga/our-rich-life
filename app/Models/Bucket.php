@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Casts\MoneyCast;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class Bucket extends Model
 {
@@ -19,8 +20,13 @@ class Bucket extends Model
         'goal' => MoneyCast::class,
     ];
 
-    public function recording()
+    public function recording(): MorphOne
     {
         return $this->morphOne(Recording::class, 'recordable');
+    }
+
+    public function events(): MorphOne
+    {
+        return $this->morphOne(Event::class, 'recordable');
     }
 }

@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Event extends Model
 {
@@ -13,4 +15,18 @@ class Event extends Model
     public $timestamps = false;
 
     protected $guarded = [];
+
+    protected $casts = [
+        'occurred_at' => 'datetime',
+    ];
+
+    public function recording(): belongsTo
+    {
+        return $this->belongsTo(Recording::class);
+    }
+
+    public function recordable(): MorphTo
+    {
+        return $this->morphTo();
+    }
 }

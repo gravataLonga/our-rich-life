@@ -23,7 +23,7 @@ return new class extends Migration
         Schema::create('events', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('recording_id');
-            $table->unsignedBigInteger('recordable_id');
+            $table->morphs('recordable');
             $table->timestamp('occurred_at');
         });
 
