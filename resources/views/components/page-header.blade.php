@@ -1,9 +1,15 @@
+@props([
+    'breadcrumb',
+    'actions'
+])
 <div class="flex justify-between items-start">
     <div class="flex flex-col items-start space-y-2">
         <h1 class="font-bold text-4xl text-slate-800 font-sans">{{ $slot }}</h1>
+        @if (!empty($breadcrumb))
         <x-breadcrumb>
             {{ $breadcrumb }}
         </x-breadcrumb>
+        @endif
     </div>
 
     @if(!empty($actions))

@@ -72,7 +72,10 @@ class ComponentTest extends TestCase
             // Breadcrumbs
             'breadcrumb' => ['<x-breadcrumb>breadcrumb</x-breadcrumb>', ['breadcrumb']],
             'breadcrumb item' => ['<x-breadcrumb><x-breadcrumb.item router="bucket.overview">Item BreadCrumb</x-breadcrumb.item></x-breadcrumb>', ['Item BreadCrumb', '/bucket']],
-            'breadcrumb seperator' => ['<x-breadcrumb><x-breadcrumb.seperator/></x-breadcrumb>', ['svg']],
+            'breadcrumb separator' => ['<x-breadcrumb><x-breadcrumb.separator/></x-breadcrumb>', ['svg']],
+            // Page Header
+            'page header' => ['<x-page-header>page</x-page-header>', ['page']],
+            'page header breadcrumb' => ['<x-page-header>page<x-slot:breadcrumb>breadcrumb</x-slot:breadcrumb><x-slot:actions>actions</x-slot:actions></x-page-header>', ['page', 'breadcrumb', 'actions']],
         ];
     }
 }

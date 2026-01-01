@@ -5,7 +5,7 @@
 
         <x-slot:breadcrumb>
             <x-breadcrumb.item router="welcome">Dashboard</x-breadcrumb.item>
-            <x-breadcrumb.seperator/>
+            <x-breadcrumb.separator/>
             <x-breadcrumb.item router="bucket.overview">Bucket</x-breadcrumb.item>
         </x-slot:breadcrumb>
 
