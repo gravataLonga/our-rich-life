@@ -59,10 +59,13 @@ class Form extends Component
 
     public function recover(Event $event)
     {
-        // todo check if recording is owner...
-        $recording = Recording::findOrFail($event->recording_id);
-        $recording->recordable_id = $event->recordable_id;
-        $recording->save();
+        $this->recording = Recording::findOrFail($event->recording_id);
+        $this->recording->recordable_id = $event->recordable_id;
+        $this->recording->save();
+        $this->recording->fresh(['recordable']);
+
+        $this->name = $this->recording->recordable->name;
+        $this->goal = $this->recording->recordable->goal->toNative();
     }
 
     public function render()

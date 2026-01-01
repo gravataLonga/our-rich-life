@@ -162,7 +162,7 @@ class BucketTest extends TestCase
             'occurred_at' => now()
         ]);
 
-        Livewire::test(Bucket\Form::class, ['recording' => $recording])
+        $response = Livewire::test(Bucket\Form::class, ['recording' => $recording])
             ->call('recover', $event);
 
         $this->assertDatabaseCount('buckets', 2);
@@ -170,6 +170,8 @@ class BucketTest extends TestCase
             'recordable_type' => \App\Models\Bucket::class,
             'recordable_id' => $bucketTwo->id,
         ]);
+        $response->assertViewHas('name', $bucketTwo->name);
+        $response->assertViewHas('goal', $bucketTwo->goal->toNative());
     }
 
 }
