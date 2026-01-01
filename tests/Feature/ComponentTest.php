@@ -55,18 +55,24 @@ class ComponentTest extends TestCase
     {
         return [
             'panel' => ["<x-card>Hello</x-card>", ['Hello']],
+            // Links buttons
             'link button primary' => ["<x-link.button-primary href=\"/link\">button</x-link.button-primary>", ['button', '/link']],
             'link button primary with attributes' => ["<x-link.button-primary wire:navigate href=\"/link\">button</x-link.button-primary>", ['wire:navigate']],
             'link button secondary' => ["<x-link.button-secondary href=\"/link\">button</x-link.button-secondary>", ['button', '/link']],
             'link button secondary with attributes' => ["<x-link.button-secondary wire:navigate href=\"/link\">button</x-link.button-secondary>", ['wire:navigate']],
             'link button tertiary' => ["<x-link.button-tertiary href=\"/link\">button</x-link.button-tertiary>", ['button', '/link']],
             'link button tertiary with attributes' => ["<x-link.button-tertiary wire:navigate href=\"/link\">button</x-link.button-tertiary>", ['wire:navigate']],
+            // buttons
             'button primary' => ["<x-button.primary>button</x-button.primary>", ['button']],
             'button primary with attributes' => ["<x-button.primary wire:navigate>button</x-button.primary>", ['wire:navigate']],
             'button secondary' => ["<x-button.secondary>button</x-button.secondary>", ['button']],
             'button secondary with attributes' => ["<x-button.secondary wire:navigate>button</x-button.secondary>", ['wire:navigate']],
             'button tertiary' => ["<x-button.tertiary>button</x-button.tertiary>", ['button']],
             'button tertiary with attributes' => ["<x-button.tertiary wire:navigate>button</x-button.tertiary>", ['wire:navigate']],
+            // Breadcrumbs
+            'breadcrumb' => ['<x-breadcrumb>breadcrumb</x-breadcrumb>', ['breadcrumb']],
+            'breadcrumb item' => ['<x-breadcrumb><x-breadcrumb.item router="bucket.overview">Item BreadCrumb</x-breadcrumb.item></x-breadcrumb>', ['Item BreadCrumb', '/bucket']],
+            'breadcrumb seperator' => ['<x-breadcrumb><x-breadcrumb.seperator/></x-breadcrumb>', ['svg']],
         ];
     }
 }
