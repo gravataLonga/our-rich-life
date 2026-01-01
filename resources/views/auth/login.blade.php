@@ -11,34 +11,29 @@
 <header class="h-20 bg-slate-800 flex items-center">
     <div class="container mx-auto flex justify-between items-center">
         <h1 class="font-bold font-sans text-2xl text-white"><a href="/">Our Richer Life</a></h1>
-        <nav class="">
-            <div class="flex justify-around text-white font-semibold space-x-4 items-center">
-                <x-nav-item>Vision</x-nav-item>
-                <x-nav-item>Financial Selfie</x-nav-item>
-                <x-nav-item wire:navigate href="{{ route('bucket.overview') }}">Bucket</x-nav-item>
-            </div>
-        </nav>
     </div>
 </header>
 
     <div class="container mx-auto mt-10">
         @csrf
 
-        <x-card class="mx-auto flex flex-col space-y-4">
+        <x-card class="mx-auto">
             <form action="{{ route('login.store') }}" method="post">
-                <div class="flex flex-col space-y-2">
-                    <label for="email">
-                        e-mail
-                    </label>
-                    <x-form.input name="email" type="email"/>
+                <div class="flex flex-col space-y-4">
+                    <div class="flex flex-col space-y-2">
+                        <label for="email">
+                            e-mail
+                        </label>
+                        <x-form.input name="email" type="email"/>
+                    </div>
+                    <div class="flex flex-col space-y-2">
+                        <label for="password">password</label>
+                        <x-form.input name="password" type="password"/>
+                    </div>
+                    <x-button.primary type="submit">sign in</x-button.primary>
                 </div>
-                <div class="flex flex-col space-y-2">
-                    <label for="password">password</label>
-                    <x-form.input name="password" type="password"/>
-                </div>
-                <x-button.primary type="submit">sign in</x-button.primary>
             </form>
-            <x-login-link email="me@jonathan.pt"/>
+            <x-login-link email="me@jonathan.pt" class="mt-10"/>
         </x-card>
     </div>
 
