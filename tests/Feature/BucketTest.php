@@ -24,6 +24,13 @@ class BucketTest extends TestCase
     }
 
     #[Test]
+    public function overview ()
+    {
+        $this->get(route('bucket.overview'))
+            ->assertSeeLivewire(Bucket\Overview::class);
+    }
+
+    #[Test]
     public function access_create_form(): void
     {
         $response = $this->get(route('bucket.form.create'));
@@ -34,7 +41,7 @@ class BucketTest extends TestCase
     }
 
     #[Test]
-    public function can_create_a_bucket (): void
+    public function it_can_store (): void
     {
         $response = Livewire::test(Bucket\Form::class, ['recording' => null])
             ->set('name', 'test')
@@ -58,6 +65,15 @@ class BucketTest extends TestCase
             'recordable_id' => 1,
             'recording_id' => 1,
         ]);
+    }
+
+    #[Test]
+    public function access_update_form ()
+    {
+        $bucket = \App\Models\Bucket::factory()->has(Recording::factory())->create();
+
+        $this->get(route('bucket.form.edit', $bucket->recording))
+            ->assertSeeLivewire(Bucket\Form::class);
     }
 
     #[Test]
@@ -146,7 +162,7 @@ class BucketTest extends TestCase
             'occurred_at' => now()
         ]);
 
-        $response = Livewire::test(Bucket\Form::class, ['recording' => $recording])
+        Livewire::test(Bucket\Form::class, ['recording' => $recording])
             ->call('recover', $event);
 
         $this->assertDatabaseCount('buckets', 2);

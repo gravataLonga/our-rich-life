@@ -6,8 +6,10 @@ use App\Models\Bucket;
 use App\Models\Event;
 use App\Models\Recording;
 use Illuminate\Database\Eloquent\Collection;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
+#[Title("Bucket Form")]
 class Form extends Component
 {
     public ?Recording $recording = null;
@@ -51,7 +53,6 @@ class Form extends Component
             'recording_id' => $this->recording->id,
             'occurred_at' => now()
         ]);
-
 
         $this->redirectRoute('bucket.overview');
     }
