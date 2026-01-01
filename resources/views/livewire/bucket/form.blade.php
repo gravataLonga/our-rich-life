@@ -40,12 +40,17 @@
                 Histórico
             </h3>
         </div>
-        <div class="flex flex-col space-y-2">
+        <div class="flex flex-col space-y-4">
             @foreach($events as $event)
                 <x-card>
-                    <strong>Name</strong>: {{ $event->recordable->name }}<br/>
-                    <strong>Goal</strong>: {{ $event->recordable->goal->format('€') }}
-                    <p class="text-slate-400">{{ $event->occurred_at->format('Y, M d') }}</p>
+                    <div class="flex flex-col space-y-4">
+                        <div>
+                            <strong>Name</strong>: {{ $event->recordable->name }}<br/>
+                            <strong>Goal</strong>: {{ $event->recordable->goal->format('€') }}
+                            <p class="text-slate-400">{{ $event->occurred_at->format('Y, M d H:i:s') }}</p>
+                        </div>
+                        <x-button.tertiary type="button" wire:click="recover({{ $event->id }})">Recover</x-button.tertiary>
+                    </div>
                 </x-card>
             @endforeach
         </div>

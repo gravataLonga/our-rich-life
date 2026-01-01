@@ -21,11 +21,11 @@
     </div>
 </header>
 
-<form action="{{ route('login.store') }}" method="post">
     <div class="container mx-auto mt-10">
-            @csrf
+        @csrf
 
-            <x-card class="mx-auto flex flex-col space-y-4">
+        <x-card class="mx-auto flex flex-col space-y-4">
+            <form action="{{ route('login.store') }}" method="post">
                 <div class="flex flex-col space-y-2">
                     <label for="email">
                         e-mail
@@ -37,11 +37,10 @@
                     <x-form.input name="password" type="password"/>
                 </div>
                 <x-button.primary type="submit">sign in</x-button.primary>
-            </x-card>
-
-
+            </form>
+            <x-login-link email="me@jonathan.pt"/>
+        </x-card>
     </div>
-</form>
 
 </body>
 </html>

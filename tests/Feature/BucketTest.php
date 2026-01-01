@@ -135,4 +135,25 @@ class BucketTest extends TestCase
         ]);
     }
 
+    #[Test]
+    public function it_can_recover_past_buckets ()
+    {
+        $bucketOne = \App\Models\Bucket::factory()->create();
+        $bucketTwo = \App\Models\Bucket::factory()->create();
+        $recording = $bucketOne->recording()->create();
+        $event = $bucketTwo->events()->create([
+            'recording_id' => $recording->id,
+            'occurred_at' => now()
+        ]);
+
+        $response = Livewire::test(Bucket\Form::class, ['recording' => $recording])
+            ->call('recover', $event);
+
+        $this->assertDatabaseCount('buckets', 2);
+        $this->assertDatabaseHas('recordings', [
+            'recordable_type' => \App\Models\Bucket::class,
+            'recordable_id' => $bucketTwo->id,
+        ]);
+    }
+
 }

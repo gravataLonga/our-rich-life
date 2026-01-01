@@ -43,19 +43,25 @@ class Form extends Component
 
         if ($this->recording) {
             $this->recording->recordable()->associate($bucket)->save();
-            $bucket->events()->create([
-                'recording_id' => $this->recording->id,
-                'occurred_at' => now()
-            ]);
         } else {
             $this->recording = $bucket->recording()->create();
-            $bucket->events()->create([
-                'recording_id' => $this->recording->id,
-                'occurred_at' => now()
-            ]);
         }
 
+        $bucket->events()->create([
+            'recording_id' => $this->recording->id,
+            'occurred_at' => now()
+        ]);
+
+
         $this->redirectRoute('bucket.overview');
+    }
+
+    public function recover(Event $event)
+    {
+        // todo check if recording is owner...
+        $recording = Recording::findOrFail($event->recording_id);
+        $recording->recordable_id = $event->recordable_id;
+        $recording->save();
     }
 
     public function render()

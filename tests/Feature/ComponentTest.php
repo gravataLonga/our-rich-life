@@ -61,6 +61,12 @@ class ComponentTest extends TestCase
             'link button secondary with attributes' => ["<x-link.button-secondary wire:navigate href=\"/link\">button</x-link.button-secondary>", ['wire:navigate']],
             'link button tertiary' => ["<x-link.button-tertiary href=\"/link\">button</x-link.button-tertiary>", ['button', '/link']],
             'link button tertiary with attributes' => ["<x-link.button-tertiary wire:navigate href=\"/link\">button</x-link.button-tertiary>", ['wire:navigate']],
+            'button primary' => ["<x-button.primary>button</x-button.primary>", ['button']],
+            'button primary with attributes' => ["<x-button.primary wire:navigate>button</x-button.primary>", ['wire:navigate']],
+            'button secondary' => ["<x-button.secondary>button</x-button.secondary>", ['button']],
+            'button secondary with attributes' => ["<x-button.secondary wire:navigate>button</x-button.secondary>", ['wire:navigate']],
+            'button tertiary' => ["<x-button.tertiary>button</x-button.tertiary>", ['button']],
+            'button tertiary with attributes' => ["<x-button.tertiary wire:navigate>button</x-button.tertiary>", ['wire:navigate']],
         ];
     }
 }
