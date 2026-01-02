@@ -25,7 +25,7 @@ class Overview extends Component
     }
 
     #[On('movementShow')]
-    public function show(Recording $recording)
+    public function movementShowEvent(Recording $recording)
     {
         $this->recordingMovements = $recording;
     }

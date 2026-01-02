@@ -174,4 +174,27 @@ class BucketTest extends TestCase
         $response->assertViewHas('goal', $bucketTwo->goal->toNative());
     }
 
+    #[Test]
+    public function show_movements ()
+    {
+        $bucket = \App\Models\Bucket::factory()->has(Recording::factory())->create();
+
+        $response = Livewire::test(Bucket\Card::class, ['recording' => $bucket->recording])
+            ->call('movementShow');
+
+        $response->assertDispatched('movementShow');
+    }
+
+    #[Test]
+    public function set_recording_to_show_movements ()
+    {
+        $bucket = \App\Models\Bucket::factory()->has(Recording::factory())->create();
+
+        $response = Livewire::test(Bucket\Overview::class)
+            ->call('movementShowEvent', $bucket->recording);
+
+        $response->assertSet('recordingMovements', $bucket->recording);
+        $response->assertSeeLivewire('movement.overview');
+    }
+
 }

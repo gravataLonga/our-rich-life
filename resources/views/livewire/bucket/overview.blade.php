@@ -16,12 +16,6 @@
 
     </x-page-header>
 
-    <div class="flex justify-between">
-        <h1 class="font-bold text-4xl text-slate-800 font-sans"></h1>
-        <div class="flex space-x-4">
-        </div>
-    </div>
-
     <div class="grid grid-cols-3 gap-4">
         @foreach($recordings as $recording)
             <livewire:bucket.card wire:key="{{ $recording->recordable->id }}" :$recording />
