@@ -19,4 +19,9 @@ class Card extends Component
     {
         return view('livewire.bucket.card');
     }
+
+    public function movementShow()
+    {
+        $this->dispatch('movementShow', $this->recording);
+    }
 }

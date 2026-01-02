@@ -27,4 +27,12 @@
             <livewire:bucket.card wire:key="{{ $recording->recordable->id }}" :$recording />
         @endforeach
     </div>
+
+    @if($this->showModal())
+        @teleport('body')
+            <x-modal>
+                <livewire:movement.overview :$recording />
+            </x-modal>
+        @endteleport
+    @endif
 </div>

@@ -15,8 +15,6 @@ return new class extends Migration
             $table->id();
             $table->morphs('recordable');
             $table->unsignedBigInteger('parent_id')->nullable();
-            // $table->unsignedBigInteger('owner_id')->nullable();
-            // $table->unsignedBigInteger('group_id')->nullable();
             $table->metadata();
         });
 
@@ -39,12 +37,6 @@ return new class extends Migration
             $table->string('name');
             $table->string('color', 30)->nullable();
             $table->string('icon', 50)->nullable();
-        });
-
-        Schema::create('selfies', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedInteger('account_id');
-            $table->integer('amount');
         });
 
         Schema::create('buckets', function (Blueprint $table) {

@@ -15,6 +15,10 @@ class Recording extends Model
     /** @use HasFactory<\Database\Factories\RecordingFactory> */
     use HasFactory;
 
+    protected $fillable = [
+        'parent_id'
+    ];
+
     public static function booted()
     {
         static::creating(function (Model $model) {
@@ -34,10 +38,13 @@ class Recording extends Model
 
 
     #[Scope]
-    protected function record(Builder $builder, string $recordable): void
+    protected function record(Builder $builder, string $recordable, ?int $parentId = null): void
     {
         $builder->whereMorphedTo('recordable', $recordable)
-            ->with('recordable');
+            ->with('recordable')
+            ->when($parentId, function ($query) use($parentId) {
+                return $query->where('parent_id', $parentId);
+            });
     }
 
     public function isRecordable(string $recordableClass): bool

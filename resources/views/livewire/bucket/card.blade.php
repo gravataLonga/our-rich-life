@@ -25,12 +25,12 @@
     </div>
 
     <div class="flex gap-3 mt-4">
-        <x-link.button-secondary>
+        <x-button.secondary wire:click="movementShow()">
             <span>
                 <x-heroicon-o-chart-bar class="w-4 h-4"/>
             </span>
             <span>Movimentos</span>
-        </x-link.button-secondary>
+        </x-button.secondary>
         <x-link.button-tertiary href="{{ route('bucket.form.edit', ['recording' => $recording->id]) }}">
             <span>
                 <x-heroicon-o-pencil-square class="w-4 h-4"/>
@@ -38,5 +38,7 @@
             <span>Edit</span>
         </x-link.button-tertiary>
     </div>
+
+
 
 </x-card>
