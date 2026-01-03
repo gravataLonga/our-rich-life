@@ -35,6 +35,7 @@ class MovementTest extends TestCase
             ->set('movement', 1000)
             ->call('store');
 
+        $bucket->assertSee('€ 1 000,00');
         $this->assertDatabaseCount('recordings', 2);
         $this->assertDatabaseCount('movements', 1);
         $this->assertDatabaseHas('movements', [
