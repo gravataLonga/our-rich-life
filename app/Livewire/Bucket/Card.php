@@ -4,6 +4,7 @@ namespace App\Livewire\Bucket;
 
 use App\Models\Bucket;
 use App\Models\Recording;
+use Illuminate\Log\Logger;
 use Livewire\Component;
 
 class Card extends Component
@@ -22,6 +23,6 @@ class Card extends Component
 
     public function movementShow()
     {
-        $this->dispatch('movementShow', $this->recording);
+        $this->dispatch('movementShow', recordingId: $this->recording->id);
     }
 }

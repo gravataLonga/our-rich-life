@@ -9,15 +9,15 @@ use Livewire\Component;
 
 class Overview extends Component
 {
-    public Recording $recording;
+    public Recording $recordingBucket;
 
     public ?int $movement = null;
 
     public Collection $movements;
 
-    public function mount(Recording $recording)
+    public function mount(Recording $recordingBucket)
     {
-        $this->recording = $recording;
+        $this->recordingBucket = $recordingBucket;
         $this->movements = Recording::record(Movement::class)
             ->orderBy('created_at', 'desc')
             ->get();
@@ -28,7 +28,7 @@ class Overview extends Component
         Movement::create([
             'amount' => $this->movement
         ])->recording()->create([
-            'parent_id' => $this->recording->id,
+            'parent_id' => $this->recordingBucket->id,
         ]);
 
         $this->movements = Recording::record(Movement::class)

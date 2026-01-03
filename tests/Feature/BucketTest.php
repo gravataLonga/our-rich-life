@@ -108,8 +108,8 @@ class BucketTest extends TestCase
         \App\Models\Bucket::factory()->count(5)->has(Recording::factory())->create();
         $response = Livewire::test(Bucket\Overview::class);
 
-        $response->assertSuccessful()
-            ->assertViewHas('recordings');
+        $response->assertSuccessful();
+        $response->assertCount('recordings', 5);
     }
 
     #[Test]
@@ -185,7 +185,7 @@ class BucketTest extends TestCase
             ->call('movementShow');
 
         $response->assertDispatched('movementShow', function (string $eventName, mixed $params) use ($bucket) {
-            return count($params) === 1 && $params[0]['id'] === $bucket->recording->id;
+            return count($params) === 1 && $params['recordingId'] === $bucket->recording->id;
         });
     }
 
@@ -195,9 +195,11 @@ class BucketTest extends TestCase
         $bucket = \App\Models\Bucket::factory()->has(Recording::factory())->create();
 
         $response = Livewire::test(Bucket\Overview::class)
-            ->call('movementShowEvent', $bucket->recording);
+            ->call('movementShowEvent', $bucket->recording->id);
 
-        $response->assertSet('recordingMovements', $bucket->recording);
+        $response->assertSet('recordingMovements', function ($value) use ($bucket) {
+            return $value->id == $bucket->recording->id;
+        });
         $response->assertSeeLivewire('movement.overview');
     }
 

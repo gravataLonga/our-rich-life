@@ -30,7 +30,7 @@ class MovementTest extends TestCase
     public function store_movement ()
     {
         $bucket = Livewire::test(Overview::class, [
-            'recording' => $this->bucket->recording,
+            'recordingBucket' => $this->bucket->recording,
         ])
             ->set('movement', 1000)
             ->call('store');

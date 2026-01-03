@@ -17,15 +17,15 @@
     </x-page-header>
 
     <div class="grid grid-cols-3 gap-4">
-        @foreach($recordings as $recording)
-            <livewire:bucket.card wire:key="{{ $recording->recordable->id }}" :$recording />
+        @foreach($this->recordings as $recording)
+            <livewire:bucket.card wire:key="{{ $recording->id }}" :$recording />
         @endforeach
     </div>
 
     @if($this->showModal())
         @teleport('body')
             <x-modal>
-                <livewire:movement.overview :$recording @movement-stored="movementStored" />
+                <livewire:movement.overview :$recording />
             </x-modal>
         @endteleport
     @endif

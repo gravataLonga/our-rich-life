@@ -25,6 +25,7 @@ class MoneyTest extends TestCase
 
         $this->assertTrue($money->isNull());
         $this->assertEquals(null, $money->toNative());
+        $this->assertEquals('€ 0,00', $money->format('€'));
     }
 
     #[Test]

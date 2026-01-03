@@ -44,5 +44,10 @@ return new class extends Migration
             $table->string('name');
             $table->unsignedInteger('goal');
         });
+
+        Schema::create('movements', function (Blueprint $table) {
+            $table->id();
+            $table->bigInteger('amount');
+        });
     }
 };
