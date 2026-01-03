@@ -197,7 +197,7 @@ class BucketTest extends TestCase
         $response = Livewire::test(Bucket\Overview::class)
             ->call('movementShowEvent', $bucket->recording->id);
 
-        $response->assertSet('recordingMovements', function ($value) use ($bucket) {
+        $response->assertSet('recordingBucket', function ($value) use ($bucket) {
             return $value->id == $bucket->recording->id;
         });
         $response->assertSeeLivewire('movement.overview');

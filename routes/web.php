@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
+
+Route::get('/', AuthenticatedSessionController::class.'@create');
 
 Route::prefix('dashboard')->middleware('auth')->group(function () {
     Route::get('', \App\Livewire\Welcome::class)->name('welcome');

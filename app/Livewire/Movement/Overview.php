@@ -25,6 +25,10 @@ class Overview extends Component
 
     public function store()
     {
+        $this->validate([
+            'movement' => 'required|numeric',
+        ]);
+
         Movement::create([
             'amount' => $this->movement
         ])->recording()->create([

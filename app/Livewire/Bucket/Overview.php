@@ -15,24 +15,24 @@ use Livewire\Component;
 #[Title('Buckets')]
 class Overview extends Component
 {
-    public ?Recording $recordingMovements = null;
+    public ?Recording $recordingBucket = null;
 
     #[On('movementShow')]
     public function movementShowEvent(int $recordingId)
     {
-        $this->recordingMovements = $this->recordings->firstWhere('id', $recordingId);
+        $this->recordingBucket = $this->recordings->firstWhere('id', $recordingId);
     }
 
     #[On('modalClose')]
     public function modalClose()
     {
-        $this->recordingMovements = null;
+        $this->recordingBucket = null;
     }
 
     #[Computed]
     public function showModal()
     {
-        return ! is_null($this->recordingMovements);
+        return ! is_null($this->recordingBucket);
     }
 
     public function render()

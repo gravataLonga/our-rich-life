@@ -25,7 +25,7 @@
     @if($this->showModal())
         @teleport('body')
             <x-modal>
-                <livewire:movement.overview :$recording />
+                <livewire:movement.overview :$recordingBucket />
             </x-modal>
         @endteleport
     @endif
