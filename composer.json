@@ -35,7 +35,8 @@
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/",
             "OurRichLife\\": "src/"
-        }
+        },
+        "files": ["src/helper.php"]
     },
     "autoload-dev": {
         "psr-4": {

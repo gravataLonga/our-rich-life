@@ -1,4 +1,4 @@
-<div class="p-4" x-data="{}">
+<div class="p-4">
     <table class="w-full mb-10">
         <thead>
             <tr>

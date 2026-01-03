@@ -5,14 +5,14 @@
             <h3 class="text-2xl font-bold text-gray-800 mt-1">{{ $recording->recordable->name  }}</h3>
         </div>
         <div class="bg-green-100 text-green-700 px-4 py-2 rounded-lg font-bold text-lg">
-            43%
+            {{ round($recording->children->sum(fn($record) => $record->recordable->amount->value()) * 100 / $recording->recordable->goal->value(), 2)  }} %
         </div>
     </div>
 
     <div class="grid grid-cols-2 gap-4 mb-4">
         <div>
             <p class="text-gray-500 text-sm mb-1">Valor Actual</p>
-            <p class="text-2xl font-bold text-gray-800">{{ \OurRichLife\Money::fromNative(1250.50)->format('€') }}</p>
+            <p class="text-2xl font-bold text-gray-800">{{ \OurRichLife\Money::fromNative($recording->children->sum(fn($record) => $record->recordable->amount->toNative()))->format('€') }}</p>
         </div>
         <div>
             <p class="text-gray-500 text-sm mb-1">Meta</p>
@@ -21,7 +21,7 @@
     </div>
 
     <div class="bg-gray-200 rounded-full h-2 overflow-hidden">
-        <div class="progress-fill bg-linear-to-r from-green-400 to-green-600 h-full rounded-full" style="width: 43%"></div>
+        <div class="progress-fill bg-linear-to-r from-green-400 to-green-600 h-full rounded-full" style="width: {{  clamp(round($recording->children->sum(fn($record) => $record->recordable->amount->value()) * 100 / $recording->recordable->goal->value(), 2), 0, 100) }}%"></div>
     </div>
 
     <div class="flex gap-3 mt-4">

@@ -36,7 +36,6 @@ class Recording extends Model
         return $this->morphTo();
     }
 
-
     #[Scope]
     protected function record(Builder $builder, string $recordable, ?int $parentId = null): void
     {
@@ -45,6 +44,11 @@ class Recording extends Model
             ->when($parentId, function ($query) use($parentId) {
                 return $query->where('parent_id', $parentId);
             });
+    }
+
+    public function children()
+    {
+        return $this->hasMany(self::class, 'parent_id');
     }
 
     public function isRecordable(string $recordableClass): bool

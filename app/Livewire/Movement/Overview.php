@@ -36,6 +36,7 @@ class Overview extends Component
             ->get();
 
         $this->movement = null;
+        $this->dispatch('movement-stored');
     }
 
     public function render()

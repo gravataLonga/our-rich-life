@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Livewire\Bucket;
+use App\Models\Movement;
 use App\Models\Recording;
 use App\Models\User;
 use Carbon\Carbon;
@@ -183,7 +184,9 @@ class BucketTest extends TestCase
         $response = Livewire::test(Bucket\Card::class, ['recording' => $bucket->recording])
             ->call('movementShow');
 
-        $response->assertDispatched('movementShow');
+        $response->assertDispatched('movementShow', function (string $eventName, mixed $params) use ($bucket) {
+            return count($params) === 1 && $params[0]['id'] === $bucket->recording->id;
+        });
     }
 
     #[Test]
@@ -196,6 +199,22 @@ class BucketTest extends TestCase
 
         $response->assertSet('recordingMovements', $bucket->recording);
         $response->assertSeeLivewire('movement.overview');
+    }
+
+    #[Test]
+    public function show_total_movements_and_percentage ()
+    {
+        $bucket = \App\Models\Bucket::factory()->has(Recording::factory())->create([
+            'goal' => 100000
+        ]);
+        Movement::factory()->has(Recording::factory()->state(['parent_id' => $bucket->recording->id]))
+            ->count(2)
+            ->create(['amount' => 10000]);
+
+        $response = Livewire::test(Bucket\Overview::class);
+
+        $response->assertSee('20%');
+        $response->assertSee('€ 20 000,00');
     }
 
 }
