@@ -21,6 +21,7 @@ class BucketTest extends TestCase
     {
         parent::setUp();
         $this->actingAs(User::factory()->create());
+        $this->withoutVite();
     }
 
     #[Test]
