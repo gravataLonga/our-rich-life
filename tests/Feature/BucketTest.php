@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Livewire\Bucket;
+use App\Models\Event;
 use App\Models\Movement;
 use App\Models\Recording;
 use App\Models\User;
@@ -152,6 +153,39 @@ class BucketTest extends TestCase
             'occurred_at' => '2025-01-01 00:00:00',
         ]);
     }
+
+    #[Test]
+    public function can_access_form_for_update ()
+    {
+        $bucket = \App\Models\Bucket::factory()->has(Recording::factory())->create();
+
+        $this->get(route('bucket.form.edit', $bucket->recording))
+            ->assertSeeLivewire(Bucket\Form::class)
+            ->assertDontSee('recover')
+            ->assertSee('current');
+    }
+
+    #[Test]
+    public function can_recover_past_history()
+    {
+        $bucketOne = \App\Models\Bucket::factory()->create();
+        $bucketTwo = \App\Models\Bucket::factory()->create();
+        $recording = $bucketOne->recording()->create();
+        $bucketOne->events()->create([
+            'recording_id' => $recording->id,
+            'occurred_at' => now()
+        ]);
+        $bucketTwo->events()->create([
+            'recording_id' => $recording->id,
+            'occurred_at' => now()
+        ]);
+
+        $response = $this->get(route('bucket.form.edit', $bucketOne->recording))
+            ->assertSeeLivewire(Bucket\Form::class)
+            ->assertSee('recover(2)')
+            ->assertSee('current');
+    }
+
 
     #[Test]
     public function it_can_recover_past_buckets ()
