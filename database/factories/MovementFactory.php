@@ -17,7 +17,7 @@ class MovementFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'amount' => $this->faker->numberBetween(100, 1000),
         ];
     }
 }

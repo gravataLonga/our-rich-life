@@ -48,6 +48,8 @@ return new class extends Migration
         Schema::create('movements', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('amount');
+            $table->tinyText('notes')->nullable();
+            $table->boolean('was_absoluted_value')->default(false);
         });
     }
 };

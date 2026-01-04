@@ -8,7 +8,7 @@
             </tr>
         </thead>
         <tbody>
-            @forelse($movements as $movement)
+            @forelse($this->movements() as $movement)
                 <tr>
                     <td class="border-b-2 border-b-stone-200 font-semibold p-2">{{ $movement->recordable->amount->format('€') }}</td>
                     <td class="border-b-2 border-b-stone-200 font-semibold p-2">{{ $movement->created_at->format('Y, M d') }}</td>

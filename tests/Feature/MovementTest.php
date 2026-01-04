@@ -33,6 +33,7 @@ class MovementTest extends TestCase
             'recordingBucket' => $this->bucket->recording,
         ])
             ->set('movement', 1000)
+            ->set('notes', 'lorem ipsum')
             ->call('store');
 
         $bucket->assertDispatched('movement-stored');
@@ -40,12 +41,31 @@ class MovementTest extends TestCase
         $this->assertDatabaseCount('recordings', 2);
         $this->assertDatabaseCount('movements', 1);
         $this->assertDatabaseHas('movements', [
-            'amount' => 100000
+            'amount' => 100000,
+            'notes' => 'lorem ipsum',
         ]);
         $this->assertDatabaseHas('recordings', [
             'parent_id' => $this->bucket->recording->id,
             'recordable_type' => Movement::class,
         ]);
     }
+
+    #[Test]
+    public function show_movements_only_for_this_recording ()
+    {
+        $movementOne = Movement::factory()->has(Recording::factory()->state([
+            'parent_id' => $this->bucket->recording->id,
+        ]))->create();
+        $movementTwo = Movement::factory()->has(Recording::factory()->state([
+            'parent_id' => 9999,
+        ]))->create();
+
+        $movement = Livewire::test(Overview::class, [
+            'recordingBucket' => $this->bucket->recording,
+        ])
+            ->assertSee($movementOne->amount->format('€'))
+            ->assertDontSee($movementTwo->amount->format('€'));
+    }
+
 
 }
