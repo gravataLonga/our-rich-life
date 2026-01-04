@@ -57,15 +57,16 @@ class MovementTest extends TestCase
     {
         $movementOne = Movement::factory()->has(Recording::factory()->state([
             'parent_id' => $this->bucket->recording->id,
-        ]))->create();
+        ]))->create(['notes' => 'lorem ipsum']);
         $movementTwo = Movement::factory()->has(Recording::factory()->state([
             'parent_id' => 9999,
         ]))->create();
 
-        $movement = Livewire::test(Overview::class, [
+        Livewire::test(Overview::class, [
             'recordingBucket' => $this->bucket->recording,
         ])
             ->assertSee($movementOne->amount->format('€'))
+            ->assertSee('lorem ipsum')
             ->assertDontSee($movementTwo->amount->format('€'));
     }
 
