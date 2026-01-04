@@ -27,8 +27,9 @@
         <form wire:submit="store">
             @csrf
 
-            <div class="flex space-x-4">
+            <div class="flex flex-col space-y-2">
                 <x-form.input wire:model="movement" placeholder="amount"/>
+                <x-form.textarea wire:model="notes" rows="3" placeholder="write some notes about this transaction"/>
                 <x-button.primary>save</x-button.primary>
             </div>
         </form>

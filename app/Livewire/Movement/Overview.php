@@ -36,6 +36,7 @@ class Overview extends Component
         ]);
 
         $this->movement = null;
+        $this->notes = null;
         $this->dispatch('movement-stored');
     }
 

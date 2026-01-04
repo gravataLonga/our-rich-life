@@ -51,6 +51,8 @@ class BucketTest extends TestCase
             ->set('goal', 1000)
             ->call('save');
 
+        $response->assertSet('name', 'test');
+        $response->assertSet('goal', 1000);
         $response->assertHasNoErrors();
         $response->assertRedirect(route('bucket.overview'));
         $this->assertDatabaseCount('buckets', 1);

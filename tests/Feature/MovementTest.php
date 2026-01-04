@@ -36,6 +36,8 @@ class MovementTest extends TestCase
             ->set('notes', 'lorem ipsum')
             ->call('store');
 
+        $bucket->assertSet('movement', null);
+        $bucket->assertSet('notes', null);
         $bucket->assertDispatched('movement-stored');
         $bucket->assertSee('€ 1 000,00');
         $this->assertDatabaseCount('recordings', 2);
