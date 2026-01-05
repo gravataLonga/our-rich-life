@@ -49,7 +49,7 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('amount');
             $table->tinyText('notes')->nullable();
-            $table->boolean('was_absoluted_value')->default(false);
+            $table->boolean('is_snapshot')->default(false);
         });
     }
 };

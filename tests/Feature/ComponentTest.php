@@ -21,23 +21,40 @@ class ComponentTest extends TestCase
     public static function dataProviderFormInputs(): array
     {
         return [
+            // input
             'input' => ['<x-form.input/>', 'input', 'name=""'],
             'input with name' => ['<x-form.input name="hope"/>', 'input', 'name="hope"'],
             'input with id' => ['<x-form.input id="hope"/>', 'input', 'id="hope"'],
             'input with value' => ['<x-form.input value="hello"/>', 'input', 'value="hello"'],
             'input without id' => ['<x-form.input/>', 'input', 'id=""'],
             'input pass attributes' => ['<x-form.input x-model="hello"/>', 'input', 'x-model="hello"'],
+            // textarea
+            'textarea' => ['<x-form.textarea/>', 'textarea', 'name=""'],
+            'textarea with name' => ['<x-form.textarea name="hope"/>', 'textarea', 'name="hope"'],
+            'textarea with id' => ['<x-form.textarea id="hope"/>', 'textarea', 'id="hope"'],
+            'textarea with value' => ['<x-form.textarea value="hello"/>', 'textarea', 'value="hello"'],
+            'textarea without id' => ['<x-form.textarea/>', 'textarea', 'id=""'],
+            'textarea pass attributes' => ['<x-form.textarea x-model="hello"/>', 'textarea', 'x-model="hello"'],
         ];
     }
 
     #[Test]
-    public function in_case_the_error_we_show_message (): void
+    #[DataProvider('dataProviderErrors')]
+    public function in_case_the_error_we_show_message (string $name): void
     {
         $render = $this->withViewErrors([
             'name' => 'The name field is required.'
-        ])->blade('<x-form.input name="name"/>');
+        ])->blade(sprintf('<x-form.%s name="name"/>', $name));
 
         $render->assertSee('The name field is required.');
+    }
+
+    public static function dataProviderErrors()
+    {
+        return [
+            'input' => ['input'],
+            'textarea' => ['textarea'],
+        ];
     }
 
     #[Test]
@@ -69,6 +86,12 @@ class ComponentTest extends TestCase
             'button secondary with attributes' => ["<x-button.secondary wire:navigate>button</x-button.secondary>", ['wire:navigate']],
             'button tertiary' => ["<x-button.tertiary>button</x-button.tertiary>", ['button']],
             'button tertiary with attributes' => ["<x-button.tertiary wire:navigate>button</x-button.tertiary>", ['wire:navigate']],
+            // card
+            'card' => ['<x-card>card</x-card>', ['card']],
+            'card with attributes' => ['<x-card wire:show="show">card</x-card>', ['card', 'wire:show']],
+            // modal
+            'modal' => ['<x-modal>modal</x-modal>', ['modal']],
+            'modal with attributes' => ['<x-modal wire:show="show">card</x-modal>', ['modal', 'wire:show']],
             // Breadcrumbs
             'breadcrumb' => ['<x-breadcrumb>breadcrumb</x-breadcrumb>', ['breadcrumb']],
             'breadcrumb item' => ['<x-breadcrumb><x-breadcrumb.item router="bucket.overview">Item BreadCrumb</x-breadcrumb.item></x-breadcrumb>', ['Item BreadCrumb', '/bucket']],

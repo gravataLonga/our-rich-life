@@ -40,6 +40,38 @@ class Overview extends Component
         $this->dispatch('movement-stored');
     }
 
+    public function snapshot()
+    {
+        $this->validate([
+            'movement' => 'required|numeric',
+            'notes' => 'nullable|string',
+        ]);
+
+        dd(
+            Recording::with('recordable')
+                ->leftJoin('recordings as child_recordings', function ($join) {
+                    $join->on('child_recordings.parent_id', '=', $this->recordingBucket->id)
+                        ->where('child_recordings.recordable_type', Movement::class);
+                })
+                ->leftJoin('movements', 'movements.id', '=', 'child_recordings.recordable_id')
+                ->select('recordings.*')
+                ->selectRaw('COALESCE(SUM(movements.amount), 0) as total_amount')
+                ->get()
+
+        );
+
+        Movement::create([
+            'amount' => $this->movement,
+            'notes' => $this->notes,
+        ])->recording()->create([
+            'parent_id' => $this->recordingBucket->id,
+        ]);
+
+        $this->movement = null;
+        $this->notes = null;
+        $this->dispatch('movement-stored');
+    }
+
     public function render()
     {
         return view('livewire.movement.overview');

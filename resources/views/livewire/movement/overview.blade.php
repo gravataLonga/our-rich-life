@@ -36,7 +36,10 @@
             <div class="flex flex-col space-y-2">
                 <x-form.input wire:model="movement" placeholder="amount"/>
                 <x-form.textarea wire:model="notes" rows="3" placeholder="write some notes about this transaction"/>
-                <x-button.primary>save</x-button.primary>
+                <div class="grid grid-cols-2 gap-2">
+                    <x-button.primary name="transaction">transaction</x-button.primary>
+                    <x-button.primary name="snapshot">snapshot</x-button.primary>
+                </div>
             </div>
         </form>
     </div>

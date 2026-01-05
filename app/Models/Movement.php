@@ -19,6 +19,7 @@ class Movement extends Model
 
     protected $casts = [
         'amount' => MoneyCast::class,
+        'is_snapshot' => 'boolean',
     ];
 
     public function recording(): MorphOne
