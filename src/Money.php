@@ -16,7 +16,7 @@ final readonly class Money implements ValueObject
         return $this->value;
     }
 
-    public static function fromNative(mixed $value): ValueObject
+    public static function fromNative(mixed $value): Money
     {
         $value = match (true) {
             is_string($value) || is_float($value) => (int)round(floatval($value) * 100),

@@ -93,7 +93,6 @@ class MovementTest extends TestCase
     #[Test]
     public function can_snapshot_current_status ()
     {
-        $this->markTestSkipped('in progress...');
         $movement = Movement::factory()->has(Recording::factory()->state([
             'parent_id' => $this->bucket->recording->id,
         ]))->create(['amount' => 1000]);
@@ -103,8 +102,10 @@ class MovementTest extends TestCase
         ])
             ->set('movement', 2500)
             ->set('notes', 'lorem ipsum')
-            ->call('snapshot')
+            ->set('isSnapshot', true)
+            ->call('store')
             ->assertSet('movement', null)
+            ->set('isSnapshot', false)
             ->assertSet('notes', null);
 
         $this->assertDatabaseHas('movements', [
