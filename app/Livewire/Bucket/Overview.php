@@ -29,6 +29,11 @@ class Overview extends Component
         $this->recordingBucket = null;
     }
 
+    #[On('movement-stored')]
+    public function movementStored()
+    {
+    }
+
     #[Computed]
     public function showModal()
     {
