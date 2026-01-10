@@ -10,6 +10,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Livewire\Livewire;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -91,28 +92,39 @@ class MovementTest extends TestCase
     }
 
     #[Test]
-    public function can_snapshot_current_status ()
+    #[DataProvider('dataProviderCanSnapshotCurrentStatus')]
+    public function can_snapshot_current_status (int $current, int $snapshot, int $expectedAmount)
     {
         $movement = Movement::factory()->has(Recording::factory()->state([
             'parent_id' => $this->bucket->recording->id,
-        ]))->create(['amount' => 1000]);
+        ]))->create(['amount' => $current]);
 
         Livewire::test(Overview::class, [
             'recordingBucket' => $this->bucket->recording,
         ])
-            ->set('movement', 2500)
+            ->set('movement', $snapshot)
             ->set('notes', 'lorem ipsum')
-            ->set('isSnapshot', true)
+            ->set('isSnapshot', 1)
             ->call('store')
             ->assertSet('movement', null)
             ->set('isSnapshot', false)
             ->assertSet('notes', null);
 
         $this->assertDatabaseHas('movements', [
-            'amount' => 150000,
+            'amount' => $expectedAmount * 100,
             'notes' => '(snapshot) lorem ipsum',
             'is_snapshot' => true,
         ]);
+    }
+
+    public static function dataProviderCanSnapshotCurrentStatus()
+    {
+        return [
+            'positive' => [1000, 2500, 1500],
+            'negative' => [2500, 1000, -1500],
+            'substract positive' => [1000, -500, -1500],
+            'substract negative' => [500, -500, -1000],
+        ];
     }
 
 

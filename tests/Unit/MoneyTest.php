@@ -81,6 +81,27 @@ class MoneyTest extends TestCase
         $this->assertNotSame($moneyTwo, $moneySum);
         $this->assertEquals(250, $moneyOne->toNative());
         $this->assertEquals(250, $moneyTwo->toNative());
+
+        $moneyOne = Money::fromNative(500);
+        $moneyTwo = Money::fromNative(300);
+        $moneySum = $moneyOne->sub($moneyTwo);
+
+        $this->assertEquals(200, $moneySum->toNative());
+        $this->assertNotSame($moneyOne, $moneySum);
+        $this->assertNotSame($moneyTwo, $moneySum);
+        $this->assertEquals(500, $moneyOne->toNative());
+        $this->assertEquals(300, $moneyTwo->toNative());
+
+        $moneyOne = Money::fromNative(300);
+        $moneyTwo = Money::fromNative(500);
+        $moneySum = $moneyOne->sub($moneyTwo);
+
+        $this->assertEquals(-200, $moneySum->toNative());
+        $this->assertNotSame($moneyOne, $moneySum);
+        $this->assertNotSame($moneyTwo, $moneySum);
+        $this->assertEquals(300, $moneyOne->toNative());
+        $this->assertEquals(500, $moneyTwo->toNative());
+
     }
 
 }

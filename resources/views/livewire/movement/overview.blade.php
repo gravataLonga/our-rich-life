@@ -38,7 +38,7 @@
                 <x-form.textarea wire:model="notes" rows="3" placeholder="write some notes about this transaction"/>
                 <div class="grid grid-cols-2 gap-2">
                     <label for="is_snapshot">
-                        <input type="checkbox" name="is_snapshot" value="1" wire:model="isSnapshot">
+                        <input type="checkbox" value="1" wire:model.live="isSnapshot">
                         Snapshot
                     </label>
                     <x-button.primary name="transaction">save</x-button.primary>

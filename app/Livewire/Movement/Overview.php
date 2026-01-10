@@ -14,7 +14,7 @@ class Overview extends Component
 {
     public Recording $recordingBucket;
 
-    public ?int $movement = null;
+    public ?float $movement = null;
 
     public ?string $notes = null;
 
@@ -32,22 +32,15 @@ class Overview extends Component
             'notes' => 'nullable|string',
         ]);
 
-
-        $totalAmount = Recording::record(Bucket::class)
-                ->leftJoin('recordings as child_recordings', function ($join) {
-                    $join->on('child_recordings.parent_id', '=', 'recordings.id')
-                        ->where('child_recordings.recordable_type', Movement::class);
-                })
-                ->leftJoin('movements', 'movements.id', '=', 'child_recordings.recordable_id')
-                ->selectRaw('COALESCE(SUM(movements.amount), 0) as total_amount')
-                ->groupBy('recordings.id')
-                ->orderBy('recordings.created_at', 'desc')
-                ->where('recordings.recordable_id', $this->recordingBucket->id)
-                ->value('total_amount');
-
+        $totalAmount = Recording::query()
+            ->leftJoin('movements', 'movements.id', '=', 'recordings.recordable_id')
+            ->where('recordings.parent_id', $this->recordingBucket->id)
+            ->selectRaw('COALESCE(SUM(movements.amount), 0) as total_amount')
+            ->groupBy('recordings.parent_id')
+            ->value('total_amount');
 
         $total = when(
-            $this->isSnapshot,
+            boolval($this->isSnapshot),
             Money::fromNative($this->movement)->sub(new Money($totalAmount)),
             $this->movement
         );
