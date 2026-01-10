@@ -14,7 +14,7 @@ class MovementModelTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function amount_is_cast_to_money ()
+    public function amount_is_cast_to_money (): void
     {
         $movement = Movement::factory()->create(['amount' => 1000]);
 

@@ -27,7 +27,7 @@ class BucketTest extends TestCase
     }
 
     #[Test]
-    public function overview ()
+    public function overview (): void
     {
         $this->get(route('bucket.overview'))
             ->assertSeeLivewire(Bucket\Overview::class);
@@ -73,7 +73,7 @@ class BucketTest extends TestCase
     }
 
     #[Test]
-    public function access_update_form ()
+    public function access_update_form (): void
     {
         $bucket = \App\Models\Bucket::factory()->has(Recording::factory())->create();
 
@@ -116,7 +116,7 @@ class BucketTest extends TestCase
     }
 
     #[Test]
-    public function can_edit_bucket ()
+    public function can_edit_bucket (): void
     {
         \App\Models\Bucket::factory()->has(Recording::factory())->create();
         $recording = Recording::with('recordable')->first();
@@ -129,7 +129,7 @@ class BucketTest extends TestCase
     }
 
     #[Test]
-    public function update_bucket ()
+    public function update_bucket (): void
     {
         Carbon::setTestNow('2025-01-01 00:00:00');
         \App\Models\Bucket::factory()->has(Recording::factory())->create();
@@ -157,7 +157,7 @@ class BucketTest extends TestCase
     }
 
     #[Test]
-    public function can_access_form_for_update ()
+    public function can_access_form_for_update (): void
     {
         $bucket = \App\Models\Bucket::factory()->has(Recording::factory())->create();
 
@@ -168,7 +168,7 @@ class BucketTest extends TestCase
     }
 
     #[Test]
-    public function can_recover_past_history()
+    public function can_recover_past_history(): void
     {
         $bucketOne = \App\Models\Bucket::factory()->create();
         $bucketTwo = \App\Models\Bucket::factory()->create();
@@ -190,7 +190,7 @@ class BucketTest extends TestCase
 
 
     #[Test]
-    public function it_can_recover_past_buckets ()
+    public function it_can_recover_past_buckets (): void
     {
         $bucketOne = \App\Models\Bucket::factory()->create();
         $bucketTwo = \App\Models\Bucket::factory()->create();
@@ -213,34 +213,30 @@ class BucketTest extends TestCase
     }
 
     #[Test]
-    public function show_movements ()
+    public function show_movements (): void
     {
         $bucket = \App\Models\Bucket::factory()->has(Recording::factory())->create();
 
         $response = Livewire::test(Bucket\Card::class, ['recording' => $bucket->recording])
             ->call('movementShow');
 
-        $response->assertDispatched('movementShow', function (string $eventName, mixed $params) use ($bucket) {
-            return count($params) === 1 && $params['recordingId'] === $bucket->recording->id;
-        });
+        $response->assertDispatched('movementShow', fn(string $eventName, mixed $params): bool => count($params) === 1 && $params['recordingId'] === $bucket->recording->id);
     }
 
     #[Test]
-    public function set_recording_to_show_movements ()
+    public function set_recording_to_show_movements (): void
     {
         $bucket = \App\Models\Bucket::factory()->has(Recording::factory())->create();
 
         $response = Livewire::test(Bucket\Overview::class)
             ->call('movementShowEvent', $bucket->recording->id);
 
-        $response->assertSet('recordingBucket', function ($value) use ($bucket) {
-            return $value->id == $bucket->recording->id;
-        });
+        $response->assertSet('recordingBucket', fn($value): bool => $value->id == $bucket->recording->id);
         $response->assertSeeLivewire('movement.overview');
     }
 
     #[Test]
-    public function show_total_movements_and_percentage ()
+    public function show_total_movements_and_percentage (): void
     {
         $bucket = \App\Models\Bucket::factory()->has(Recording::factory())->create([
             'goal' => 100000

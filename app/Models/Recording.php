@@ -21,12 +21,12 @@ class Recording extends Model
 
     public static function booted()
     {
-        static::creating(function (Model $model) {
+        static::creating(function (Model $model): void {
             $model->created_by = auth()->id();
             $model->updated_by = auth()->id();
         });
 
-        static::updating(function (Model $model) {
+        static::updating(function (Model $model): void {
             $model->updated_by = auth()->id();
         });
     }
@@ -41,9 +41,7 @@ class Recording extends Model
     {
         $builder->whereMorphedTo('recordable', $recordable)
             ->with('recordable')
-            ->when($parentId, function ($query) use($parentId) {
-                return $query->where('parent_id', $parentId);
-            });
+            ->when($parentId, fn($query) => $query->where('parent_id', $parentId));
     }
 
     public function children()

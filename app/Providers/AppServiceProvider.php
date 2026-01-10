@@ -16,7 +16,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Model::preventLazyLoading(! $this->app->isProduction());
         //
-        Blueprint::macro('metadata', function () {
+        Blueprint::macro('metadata', function (): void {
             $this->unsignedBigInteger('created_by');
             $this->unsignedBigInteger('updated_by');
             $this->unsignedBigInteger('deleted_by')->nullable();

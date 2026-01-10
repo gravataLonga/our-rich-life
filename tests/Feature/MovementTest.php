@@ -28,7 +28,7 @@ class MovementTest extends TestCase
     }
 
     #[Test]
-    public function store_movement ()
+    public function store_movement (): void
     {
         $bucket = Livewire::test(Overview::class, [
             'recordingBucket' => $this->bucket->recording,
@@ -54,7 +54,7 @@ class MovementTest extends TestCase
     }
 
     #[Test]
-    public function show_movements_only_for_this_recording ()
+    public function show_movements_only_for_this_recording (): void
     {
         $movementOne = Movement::factory()->has(Recording::factory()->state([
             'parent_id' => $this->bucket->recording->id,
@@ -72,7 +72,7 @@ class MovementTest extends TestCase
     }
 
     #[Test]
-    public function movements_computed_property()
+    public function movements_computed_property(): void
     {
         $status = Livewire::test(Overview::class, [
             'recordingBucket' => $this->bucket->recording,
@@ -93,7 +93,7 @@ class MovementTest extends TestCase
 
     #[Test]
     #[DataProvider('dataProviderCanSnapshotCurrentStatus')]
-    public function can_snapshot_current_status (int $current, int $snapshot, int $expectedAmount)
+    public function can_snapshot_current_status (int $current, int $snapshot, int $expectedAmount): void
     {
         $movement = Movement::factory()->has(Recording::factory()->state([
             'parent_id' => $this->bucket->recording->id,

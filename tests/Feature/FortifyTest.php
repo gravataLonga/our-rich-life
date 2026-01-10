@@ -20,7 +20,7 @@ class FortifyTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function create_user ()
+    public function create_user (): void
     {
         $user = new CreateNewUser()->create([
             'name' => 'Test User',
@@ -38,7 +38,7 @@ class FortifyTest extends TestCase
     }
 
     #[Test]
-    public function reset_user_password ()
+    public function reset_user_password (): void
     {
         $user = User::factory()->create();
 
@@ -48,11 +48,11 @@ class FortifyTest extends TestCase
         ]);
 
         $user = User::first();
-        $this->assertTrue(password_verify('password', $user->password));
+        $this->assertTrue(password_verify('password', (string) $user->password));
     }
 
     #[Test]
-    public function update_user_password ()
+    public function update_user_password (): void
     {
         $user = User::factory()->create(['password' => \Hash::make('12345678')]);
         $this->actingAs($user);
@@ -64,11 +64,11 @@ class FortifyTest extends TestCase
         ]);
 
         $user = User::first();
-        $this->assertTrue(password_verify('password', $user->password));
+        $this->assertTrue(password_verify('password', (string) $user->password));
     }
 
     #[Test]
-    public function update_user_profile_information ()
+    public function update_user_profile_information (): void
     {
         \Notification::fake();
         $user = User::factory()->create();
@@ -89,7 +89,7 @@ class FortifyTest extends TestCase
     }
 
     #[Test]
-    public function update_user_profile_information_without_change_email ()
+    public function update_user_profile_information_without_change_email (): void
     {
         Carbon::setTestNow('2025-01-01 00:00:00');
         \Notification::fake();
