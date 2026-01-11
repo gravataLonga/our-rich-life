@@ -1,7 +1,6 @@
 <x-card>
     <div class="flex items-start justify-between mb-4">
         <div>
-            <span class="text-gray-500 text-sm font-medium">Objetivo Financeiro</span>
             <h3 class="text-2xl font-bold text-gray-800 mt-1">{{ $recording->recordable->name  }}</h3>
         </div>
         <div class="bg-green-100 text-green-700 px-4 py-2 rounded-lg font-bold text-lg">
