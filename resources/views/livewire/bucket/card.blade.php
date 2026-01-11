@@ -9,7 +9,7 @@
         </div>
         <div class="text-right">
             <div class="bg-green-100 text-green-700 px-4 py-2 rounded-lg font-bold text-lg">
-                {{ round($totalAmount * 100 / $recording->recordable->goal->value(), 2)  }} %
+                {{ clamp($recording->recordable->calculatePercentage($totalAmount), 0, 500)  }} %
             </div>
         </div>
     </div>
@@ -22,7 +22,7 @@
     </div>
 
     <div class="bg-gray-200 rounded-full h-2 overflow-hidden">
-        <div class="progress-fill bg-linear-to-r from-green-400 to-green-600 h-full rounded-full" style="width: {{  clamp(round($totalAmount * 100 / $recording->recordable->goal->value(), 2), 0, 100) }}%"></div>
+        <div class="progress-fill bg-linear-to-r from-green-400 to-green-600 h-full rounded-full" style="width: {{  clamp($recording->recordable->calculatePercentage($totalAmount), 0, 100) }}%"></div>
     </div>
 
     <div class="flex gap-3 mt-4">

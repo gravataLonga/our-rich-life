@@ -6,6 +6,7 @@ use App\Casts\MoneyCast;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
+use OurRichLife\Money;
 
 class Bucket extends Model
 {
@@ -28,5 +29,16 @@ class Bucket extends Model
     public function events(): MorphOne
     {
         return $this->morphOne(Event::class, 'recordable');
+    }
+
+    public function calculatePercentage(? float $money): float
+    {
+        if ($money <= 0 || is_null($money)) {
+            return 0;
+        }
+
+        $total = $money * 100 / $this->goal->value();
+
+        return round($total, 2);
     }
 }

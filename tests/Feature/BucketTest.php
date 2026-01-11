@@ -243,18 +243,38 @@ class BucketTest extends TestCase
         $bucket = \App\Models\Bucket::factory()->has(
             Recording::factory()
         )->create([
-            'goal' => 100000
+            'goal' => 1000
         ]);
         Movement::factory()->has(Recording::factory()->state([
             'parent_id' => $bucket->recording->id,
         ]))
             ->count(2)
-            ->create(['amount' => 10000]);
+            ->create(['amount' => 100]);
 
         $response = Livewire::test(Bucket\Overview::class);
 
-        $response->assertSee('20%');
-        $response->assertSee('€ 20 000,00');
+        $response->assertSee('20 %');
+        $response->assertSee('€ 200,00');
+    }
+
+    #[Test]
+    public function when_percentagen_is_greather_than_500_not_increase_it ()
+    {
+        $bucket = \App\Models\Bucket::factory()->has(
+            Recording::factory()
+        )->create([
+            'goal' => 100
+        ]);
+        Movement::factory()->has(Recording::factory()->state([
+            'parent_id' => $bucket->recording->id,
+        ]))
+            ->count(2)
+            ->create(['amount' => 800]);
+
+        $response = Livewire::test(Bucket\Overview::class);
+
+        $response->assertSee('500 %');
+        $response->assertSee('€ 1 600,00');
     }
 
 }

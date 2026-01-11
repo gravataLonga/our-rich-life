@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Recording;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -20,5 +21,10 @@ class BucketFactory extends Factory
             'name' => $this->faker->companySuffix() . ' ' . $this->faker->words(3, true),
             'goal' => $this->faker->numberBetween(50000, 3400000),
         ];
+    }
+
+    public function recoring()
+    {
+        return $this->has(Recording::factory())->state(fn() => []);
     }
 }
