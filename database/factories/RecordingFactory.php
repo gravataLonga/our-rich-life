@@ -18,6 +18,7 @@ class RecordingFactory extends Factory
     public function definition(): array
     {
         return [
+            'user_id' => auth()->id() ?? User::factory()->create()->id,
         ];
     }
 }

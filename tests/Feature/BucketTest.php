@@ -64,6 +64,7 @@ class BucketTest extends TestCase
         $this->assertDatabaseHas('recordings', [
             'recordable_id' => 1,
             'recordable_type' => \App\Models\Bucket::class,
+            'user_id' => auth()->id(),
         ]);
         $this->assertDatabaseCount('events', 1);
         $this->assertDatabaseHas('events', [
@@ -75,10 +76,23 @@ class BucketTest extends TestCase
     #[Test]
     public function access_update_form (): void
     {
-        $bucket = \App\Models\Bucket::factory()->has(Recording::factory())->create();
+        $bucket = \App\Models\Bucket::factory()->has(
+            Recording::factory()
+        )->create();
 
         $this->get(route('bucket.form.edit', $bucket->recording))
             ->assertSeeLivewire(Bucket\Form::class);
+    }
+
+    #[Test]
+    public function cant_access_update_form_if_not_of_authenticated_user ()
+    {
+        $bucket = \App\Models\Bucket::factory()->has(
+            Recording::factory()->state(['user_id' => User::factory()->create()->id])
+        )->create();
+
+        $this->get(route('bucket.form.edit', $bucket->recording))
+            ->assertForbidden(route('bucket.overview'));
     }
 
     #[Test]
@@ -108,11 +122,13 @@ class BucketTest extends TestCase
     #[Test]
     public function list_buckets (): void
     {
-        \App\Models\Bucket::factory()->count(5)->has(Recording::factory())->create();
+        $notShow = \App\Models\Bucket::factory()->has(Recording::factory()->state(['user_id' => 2]))->create();
+        \App\Models\Bucket::factory()->count(5)->has(Recording::factory()->state(['user_id' => 1]))->create();
         $response = Livewire::test(Bucket\Overview::class);
 
         $response->assertSuccessful();
         $response->assertCount('recordings', 5);
+        $response->assertDontSee($notShow->name);
     }
 
     #[Test]
@@ -172,7 +188,9 @@ class BucketTest extends TestCase
     {
         $bucketOne = \App\Models\Bucket::factory()->create();
         $bucketTwo = \App\Models\Bucket::factory()->create();
-        $recording = $bucketOne->recording()->create();
+        $recording = $bucketOne->recording()->create([
+            'user_id' => auth()->id(),
+        ]);
         $bucketOne->events()->create([
             'recording_id' => $recording->id,
             'occurred_at' => now()
@@ -194,7 +212,9 @@ class BucketTest extends TestCase
     {
         $bucketOne = \App\Models\Bucket::factory()->create();
         $bucketTwo = \App\Models\Bucket::factory()->create();
-        $recording = $bucketOne->recording()->create();
+        $recording = $bucketOne->recording()->create([
+            'user_id' => auth()->id(),
+        ]);
         $event = $bucketTwo->events()->create([
             'recording_id' => $recording->id,
             'occurred_at' => now()
@@ -226,7 +246,7 @@ class BucketTest extends TestCase
     #[Test]
     public function set_recording_to_show_movements (): void
     {
-        $bucket = \App\Models\Bucket::factory()->has(Recording::factory())->create();
+        $bucket = \App\Models\Bucket::factory()->has(Recording::factory()->state(['user_id' => 1]))->create();
 
         $response = Livewire::test(Bucket\Overview::class)
             ->call('movementShowEvent', $bucket->recording->id);
@@ -238,10 +258,15 @@ class BucketTest extends TestCase
     #[Test]
     public function show_total_movements_and_percentage (): void
     {
-        $bucket = \App\Models\Bucket::factory()->has(Recording::factory())->create([
+        $bucket = \App\Models\Bucket::factory()->has(
+            Recording::factory()->state(['user_id' => auth()->id()])
+        )->create([
             'goal' => 100000
         ]);
-        Movement::factory()->has(Recording::factory()->state(['parent_id' => $bucket->recording->id]))
+        Movement::factory()->has(Recording::factory()->state([
+            'parent_id' => $bucket->recording->id,
+            'user_id' => auth()->id(),
+        ]))
             ->count(2)
             ->create(['amount' => 10000]);
 

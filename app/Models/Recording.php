@@ -16,7 +16,8 @@ class Recording extends Model
     use HasFactory;
 
     protected $fillable = [
-        'parent_id'
+        'parent_id',
+        'user_id'
     ];
 
     public static function booted()

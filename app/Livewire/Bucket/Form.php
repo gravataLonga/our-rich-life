@@ -40,7 +40,9 @@ class Form extends Component
         if ($this->recording) {
             $this->recording->recordable()->associate($bucket)->save();
         } else {
-            $this->recording = $bucket->recording()->create();
+            $this->recording = $bucket->recording()->create([
+                'user_id' => auth()->id(),
+            ]);
         }
 
         $bucket->events()->create([
