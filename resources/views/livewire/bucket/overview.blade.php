@@ -16,7 +16,7 @@
 
     </x-page-header>
 
-    <div class="grid grid-cols-3 gap-4">
+    <div class="grid grid-cols-3 gap-4 pb-8">
         @foreach($this->recordings as $recording)
             <livewire:bucket.card wire:key="{{ $recording->id }}" :$recording />
         @endforeach

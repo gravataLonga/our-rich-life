@@ -2,20 +2,22 @@
     <div class="flex items-start justify-between mb-4">
         <div>
             <h3 class="text-2xl font-bold text-gray-800 mt-1">{{ $recording->recordable->name  }}</h3>
+            <p class="mt-1 inline-flex items-center gap-1.5 text-base font-semibold text-gray-600 whitespace-nowrap">
+                <x-heroicon-o-flag class="w-4 h-4"/>
+                {{ $recording->recordable->goal->format('€') }}
+            </p>
         </div>
-        <div class="bg-green-100 text-green-700 px-4 py-2 rounded-lg font-bold text-lg">
-            {{ round($totalAmount * 100 / $recording->recordable->goal->value(), 2)  }} %
+        <div class="text-right">
+            <div class="bg-green-100 text-green-700 px-4 py-2 rounded-lg font-bold text-lg">
+                {{ round($totalAmount * 100 / $recording->recordable->goal->value(), 2)  }} %
+            </div>
         </div>
     </div>
 
-    <div class="grid grid-cols-2 gap-4 mb-4">
+    <div class="grid grid-cols-1 gap-y-4 mb-4">
         <div>
-            <p class="text-gray-500 text-sm mb-1">Valor Actual</p>
-            <p class="text-2xl font-bold text-gray-800">{{ new \OurRichLife\Money($totalAmount)->format('€') }}</p>
-        </div>
-        <div>
-            <p class="text-gray-500 text-sm mb-1">Meta</p>
-            <p class="text-2xl font-bold text-gray-800">{{ $recording->recordable->goal->format('€') }}</p>
+            <p class="text-2xl font-bold text-gray-800 whitespace-nowrap">{{ new \OurRichLife\Money($totalAmount)->format('€') }}</p>
+            <p class="mt-0.5 text-xs text-gray-500">Valor Actual</p>
         </div>
     </div>
 
