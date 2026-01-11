@@ -3,19 +3,38 @@
 namespace Tests\Unit;
 
 use OurRichLife\Money;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class MoneyTest extends TestCase
 {
     #[Test]
-    public function create_from_native (): void
+    #[DataProvider('dataProviderFromNative')]
+    public function create_from_native (mixed $fromNative, ?int $expectedValue, int|float|null $expectedNative): void
     {
-        $money = Money::fromNative(10.50);
+        $money = Money::fromNative($fromNative);
 
-        $this->assertEquals(1050, $money->value());
-        $this->assertEquals(10.50, $money->toNative());
-        $this->assertFalse($money->isNull());
+        $this->assertEquals($expectedValue, $money->value());
+        $this->assertEquals($expectedNative, $money->toNative());
+    }
+
+    public static function dataProviderFromNative()
+    {
+        return [
+            'int' => [10, 1000, 10],
+            'float' => [10.50, 1050, 10.50],
+            'string' => ['12.34', 1234, 12.34],
+            'null' => [null, null, null],
+            'value object money' => [new Money(1050), 1050, 10.50],
+        ];
+    }
+
+    #[Test]
+    public function throw_expection_if_cant_convert ()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        Money::fromNative(new \stdClass());
     }
 
     #[Test]

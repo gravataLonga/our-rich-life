@@ -22,7 +22,8 @@ final readonly class Money implements ValueObject
             is_string($value) || is_float($value) => (int)round(floatval($value) * 100),
             is_int($value) => $value * 100,
             is_null($value) => null,
-            default => throw new InvalidArgumentException(sprintf('%s is not a valid number', $fromNative)),
+            $value instanceof Money => $value->value(),
+            default => throw new InvalidArgumentException(sprintf('argument is not a valid number. Expected integer, string, null, Money object. Got %s', gettype($value))),
         };
         return new Money($value);
     }
