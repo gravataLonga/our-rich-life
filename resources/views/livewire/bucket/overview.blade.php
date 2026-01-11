@@ -11,7 +11,7 @@
 
         <x-slot:actions>
             <x-link.button-secondary>Snapshot</x-link.button-secondary>
-            <x-link.button-primary wire:navigate href="{{ route('bucket.form.create') }}">Novo Bucket</x-link.button-primary>
+            <x-link.button-primary wire:navigate href="{{ route('bucket.form.create') }}">New Bucket</x-link.button-primary>
         </x-slot:actions>
 
     </x-page-header>

@@ -17,7 +17,7 @@
     <div class="grid grid-cols-1 gap-y-4 mb-4">
         <div>
             <p class="text-2xl font-bold text-gray-800 whitespace-nowrap">{{ new \OurRichLife\Money($totalAmount)->format('€') }}</p>
-            <p class="mt-0.5 text-xs text-gray-500">Valor Actual</p>
+            <p class="mt-0.5 text-xs text-gray-500">Current Value</p>
         </div>
     </div>
 
@@ -30,7 +30,7 @@
             <span>
                 <x-heroicon-o-chart-bar class="w-4 h-4"/>
             </span>
-            <span>Movimentos</span>
+            <span>Movements</span>
         </x-button.secondary>
         <x-link.button-tertiary href="{{ route('bucket.form.edit', ['recording' => $recording->id]) }}">
             <span>
