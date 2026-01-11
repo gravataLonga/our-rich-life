@@ -20,7 +20,7 @@ class Event extends Model
         'occurred_at' => 'datetime',
     ];
 
-    public function recording(): belongsTo
+    public function recording(): BelongsTo
     {
         return $this->belongsTo(Recording::class);
     }

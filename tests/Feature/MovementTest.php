@@ -107,7 +107,7 @@ class MovementTest extends TestCase
             ->set('isSnapshot', 1)
             ->call('store')
             ->assertSet('movement', null)
-            ->set('isSnapshot', false)
+            ->assertSet('isSnapshot', false)
             ->assertSet('notes', null);
 
         $this->assertDatabaseHas('movements', [
@@ -126,6 +126,28 @@ class MovementTest extends TestCase
             'substract negative' => [500, -500, -1000],
         ];
     }
+
+    #[Test]
+    public function when_creating_an_snapshot_from_empty_movements(): void
+    {
+        Livewire::test(Overview::class, [
+            'recordingBucket' => $this->bucket->recording,
+        ])
+            ->set('movement', 1000)
+            ->set('notes', 'lorem ipsum')
+            ->set('isSnapshot', 1)
+            ->call('store')
+            ->assertSet('movement', null)
+            ->assertSet('isSnapshot', false)
+            ->assertSet('notes', null);
+
+        $this->assertDatabaseHas('movements', [
+            'amount' => 100000,
+            'notes' => '(snapshot) lorem ipsum',
+            'is_snapshot' => true,
+        ]);
+    }
+
 
 
 }

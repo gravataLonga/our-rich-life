@@ -18,7 +18,6 @@ class Form extends Component
     public ?string $name = null;
 
     public ?float $goal = null;
-    public Collection $events;
 
     public function mount(?Recording $recording = null)
     {
@@ -71,10 +70,13 @@ class Form extends Component
     #[Computed]
     public function events()
     {
-        return Event::where('recording_id', $this->recording->id)
-            ->with('recordable')
-            ->orderBy('occurred_at', 'desc')
-            ->get();
-
+        return when(
+            $this->recording,
+            fn() => Event::where('recording_id', $this->recording->id)
+                ->with('recordable')
+                ->orderBy('occurred_at', 'desc')
+                ->get(),
+            new Collection()
+        );
     }
 }
