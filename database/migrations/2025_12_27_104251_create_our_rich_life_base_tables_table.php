@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->morphs('recordable');
             $table->unsignedBigInteger('parent_id')->nullable();
-            $table->unsignedBigInteger('user_id')->nullable();
             $table->metadata();
         });
 

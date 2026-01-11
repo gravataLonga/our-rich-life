@@ -54,7 +54,6 @@ class Overview extends Component
     private function getRecordings()
     {
         return Recording::record(Bucket::class)
-                ->where('recordings.user_id', auth()->id())
                 ->leftJoin('recordings as child_recordings', function ($join): void {
                     $join->on('child_recordings.parent_id', '=', 'recordings.id')
                         ->where('child_recordings.recordable_type', Movement::class);
