@@ -28,7 +28,7 @@ Recordable are never deleted or updated, when need to update a Bucket record, we
 the recording table we change the pointer to it. 
 recordable_id: 1 -> recordable_id: 2  
 
-In this we can recover past record or see all the change that happen to a certain recording.  
+With this it can recover past record or see all the change that happen to a certain recording.  
 
 ## Event's  
 

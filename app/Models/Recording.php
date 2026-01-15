@@ -59,4 +59,20 @@ class Recording extends Model
     {
         return data_get($this->recordable, $key, $default);
     }
+
+    public static function createDelegateType(string $model, array $attributes, array $recordingProperties = [])
+    {
+        $model = tap(app($model), fn($model) => $model instanceof Model ?: throw new \Exception(''))
+            ->newQuery()
+            ->create($attributes);
+
+        $model->recording()->create($recordingProperties);
+
+        $model->events()->create([
+            'recording_id' => $model->id,
+            'occurred_at' => now(),
+        ]);
+
+        return $model;
+    }
 }

@@ -33,21 +33,7 @@ class Form extends Component
             'goal' => 'required|numeric',
         ]);
 
-        $bucket = Bucket::create(
-            $this->only(['name', 'goal'])
-        );
-
-        if ($this->recording) {
-            $this->recording->recordable()->associate($bucket)->save();
-        } else {
-            $this->recording = $bucket->recording()->create();
-        }
-
-        $bucket->events()->create([
-            'recording_id' => $this->recording->id,
-            'occurred_at' => now()
-        ]);
-
+        Recording::createDelegateType(Bucket::class, $this->only(['name', 'goal']));
         $this->redirectRoute('bucket.overview');
     }
 
