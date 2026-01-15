@@ -10,7 +10,7 @@ use Livewire\Attributes\Computed;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
-#[Title("Bucket Form")]
+#[Title('Bucket Form')]
 class Form extends Component
 {
     public ?Recording $recording = null;
@@ -33,7 +33,21 @@ class Form extends Component
             'goal' => 'required|numeric',
         ]);
 
-        Recording::createDelegateType(Bucket::class, $this->only(['name', 'goal']));
+        $bucket = Bucket::create(
+            $this->only(['name', 'goal'])
+        );
+
+        if ($this->recording) {
+            $this->recording->recordable()->associate($bucket)->save();
+        } else {
+            $this->recording = $bucket->recording()->create();
+        }
+
+        $bucket->events()->create([
+            'recording_id' => $this->recording->id,
+            'occurred_at' => now()
+        ]);
+
         $this->redirectRoute('bucket.overview');
     }
 
@@ -58,11 +72,11 @@ class Form extends Component
     {
         return when(
             $this->recording,
-            fn() => Event::where('recording_id', $this->recording->id)
+            fn () => Event::where('recording_id', $this->recording->id)
                 ->with('recordable')
                 ->orderBy('occurred_at', 'desc')
                 ->get(),
-            new Collection()
+            new Collection
         );
     }
 }

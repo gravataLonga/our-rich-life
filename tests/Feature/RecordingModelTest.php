@@ -6,7 +6,6 @@ use App\Models\Bucket;
 use App\Models\Recording;
 use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use OurRichLife\Money;
 use PHPUnit\Framework\Attributes\Test;
@@ -16,14 +15,14 @@ class RecordingModelTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->actingAs(User::factory()->create());
     }
 
     #[Test]
-    public function can_add_morph_class (): void
+    public function can_add_morph_class(): void
     {
         $bucket = Bucket::factory()->create()
             ->recording()
@@ -37,7 +36,7 @@ class RecordingModelTest extends TestCase
     }
 
     #[Test]
-    public function can_get_recordable_attributes_from_recording (): void
+    public function can_get_recordable_attributes_from_recording(): void
     {
         $bucket = Bucket::factory()->has(Recording::factory())->create();
 
@@ -48,7 +47,7 @@ class RecordingModelTest extends TestCase
     }
 
     #[Test]
-    public function can_check_type_of_recordable (): void
+    public function can_check_type_of_recordable(): void
     {
         Bucket::factory()->has(Recording::factory())->create();
 
@@ -56,63 +55,4 @@ class RecordingModelTest extends TestCase
 
         $this->assertTrue($recording->isRecordable(Bucket::class));
     }
-
-    #[Test]
-    public function can_create_recordable_from_recording_class_and_add_attributes ()
-    {
-        Carbon::setTestNow(Carbon::now());
-        $bucket = Recording::createDelegateType(Bucket::class, [
-            'name' => 'My Bucket',
-            'goal' => 1000
-        ]);
-
-        $this->assertDatabaseCount('recordings', 1);
-        $this->assertDatabaseCount('events', 1);
-        $this->assertDatabaseHas('recordings', [
-            'recordable_type' => Bucket::class,
-            'recordable_id' => $bucket->id,
-        ]);
-        $this->assertDatabaseHas('events', [
-            'recordable_id' => $bucket->id,
-            'recordable_type' => Bucket::class,
-            'recording_id' => 1,
-            'occurred_at' => now(),
-        ]);
-        $this->assertDatabaseHas('buckets', [
-            'name' => 'My Bucket',
-            'goal' => 100000
-        ]);
-    }
-
-    #[Test]
-    public function not_accept_other_type_when_creating_with_method ()
-    {
-        $this->expectException(\Exception::class);
-
-        Recording::createDelegateType(Money::class, [
-            'name' => 'My Bucket',
-            'goal' => 1000
-        ]);
-    }
-
-    #[Test]
-    public function is_possible_to_add_properties_to_recording_table ()
-    {
-        $bucket = Recording::createDelegateType(Bucket::class, [
-            'name' => 'My Bucket',
-            'goal' => 1000
-        ], [
-            'parent_id' => 1
-        ]);
-
-        $this->assertDatabaseCount('recordings', 1);
-        $this->assertDatabaseHas('recordings', [
-            'recordable_type' => Bucket::class,
-            'recordable_id' => $bucket->id,
-            'parent_id' => 1
-        ]);
-    }
-
-
-
 }

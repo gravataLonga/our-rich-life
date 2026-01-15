@@ -4,10 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Recording extends Model
@@ -17,7 +15,7 @@ class Recording extends Model
 
     protected $fillable = [
         'parent_id',
-        'user_id'
+        'user_id',
     ];
 
     public static function booted()
@@ -42,7 +40,7 @@ class Recording extends Model
     {
         $builder->whereMorphedTo('recordable', $recordable)
             ->with('recordable')
-            ->when($parentId, fn($query) => $query->where('parent_id', $parentId));
+            ->when($parentId, fn ($query) => $query->where('parent_id', $parentId));
     }
 
     public function children()
@@ -58,21 +56,5 @@ class Recording extends Model
     public function attr(string $key, mixed $default = null): mixed
     {
         return data_get($this->recordable, $key, $default);
-    }
-
-    public static function createDelegateType(string $model, array $attributes, array $recordingProperties = [])
-    {
-        $model = tap(app($model), fn($model) => $model instanceof Model ?: throw new \Exception(''))
-            ->newQuery()
-            ->create($attributes);
-
-        $model->recording()->create($recordingProperties);
-
-        $model->events()->create([
-            'recording_id' => $model->id,
-            'occurred_at' => now(),
-        ]);
-
-        return $model;
     }
 }
