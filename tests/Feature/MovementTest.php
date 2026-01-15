@@ -139,7 +139,8 @@ class MovementTest extends TestCase
             ->call('store')
             ->assertSet('movement', null)
             ->assertSet('isSnapshot', false)
-            ->assertSet('notes', null);
+            ->assertSet('notes', null)
+            ->assertSee('data-snapshot');
 
         $this->assertDatabaseHas('movements', [
             'amount' => 100000,

@@ -5,6 +5,7 @@
                 <td class="border-b-2 border-b-stone-200 font-semibold p-2 w-8/12">Amount</td>
                 <td class="border-b-2 border-b-stone-200 font-semibold p-2 w-4/12">Date</td>
                 <td class="border-b-2 border-b-stone-200 font-semibold p-2 w-4/12"></td>
+                <td class="border-b-2 border-b-stone-200 font-semibold p-2 w-4/12"></td>
             </tr>
         </thead>
         <tbody x-data="{show:[]}">
@@ -12,6 +13,11 @@
                 <tr>
                     <td class="border-b-2 border-b-stone-200 font-semibold p-2">{{ $movement->recordable->amount->format('€') }}</td>
                     <td class="border-b-2 border-b-stone-200 font-semibold p-2">{{ $movement->created_at->format('Y, M d') }}</td>
+                    <td class="border-b-2 border-b-stone-200 font-semibold p-2">
+                        @if($movement->recordable->is_snapshot)
+                            <x-heroicon-o-camera data-snapshot class="w-4 h-4"/>
+                        @endif
+                    </td>
                     <td class="border-b-2 border-b-stone-200 font-semibold p-2">
                         <x-heroicon-o-eye x-show="show.filter((i) => i === {{ $movement->id }}).length <= 0" class="w-4 h-4" @click="show.push({{ $movement->id}})"/>
                         <x-heroicon-o-eye-slash x-show="show.filter((i) => i === {{ $movement->id }}).length > 0" class="w-4 h-4" @click="show = show.filter((i) => i !== {{ $movement->id}})"/>
